@@ -1,10 +1,14 @@
-package com.dan232.elections;
+package dan232.elections;
 
+import dan232.elections.div.Divisors;
+import dan232.elections.quo.Quotas;
+
+import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
 
 /**
- * Class of executioin
+ * Class of execution
  * 
  * @author daconcep
  *
@@ -18,7 +22,7 @@ public final class Main {
 	 * @throws Exception
 	 */
 	public static Map<String,Integer> Webster(Map<String,Integer> votes, int esc) throws Exception{
-		return Divisors.MethodDivisor(votes,esc,Divisors.class.getDeclaredMethod("divisorsSaint", int.class));
+		return Divisors.MethodDivisor(votes,esc,Divisors::divisorsSaint);
 	}
 	
 	/**
@@ -28,7 +32,7 @@ public final class Main {
 	 * @throws Exception
 	 */
 	public static Map<String,Integer> Jefferson(Map<String,Integer> votes, int esc) throws Exception{
-		return Divisors.MethodDivisor(votes,esc,Divisors.class.getDeclaredMethod("divisorsDHont", int.class));
+		return Divisors.MethodDivisor(votes,esc,Divisors::divisorsDHont);
 	}
 	
 	/**
@@ -38,7 +42,7 @@ public final class Main {
 	 * @throws Exception
 	 */
 	public static Map<String,Integer> Danes(Map<String,Integer> votes, int esc) throws Exception{
-		return Divisors.MethodDivisor(votes,esc,Divisors.class.getDeclaredMethod("divisorsDin", int.class));
+		return Divisors.MethodDivisor(votes,esc,Divisors::divisorsDin);
 	}
 	
 	/**
@@ -49,16 +53,7 @@ public final class Main {
 	 */
 	public static Map<String,Integer> Hamilton(Map<String,Integer> votes,int esc) throws Exception{
 		
-		Class<?>[] cArg=new Class[3];
-		cArg[0]=int.class;
-		cArg[1]=Map.class;
-		cArg[2]=Map.class;
-		
-		Class<?>[] cArg2=new Class[2];
-		cArg2[0]=int.class;
-		cArg2[1]=Map.class;
-		
-		return Quota.MethodQuota(votes,esc,Quota.class.getDeclaredMethod("quotaStandar", cArg2),Quota.class.getDeclaredMethod("remaindersLargestRemainder",cArg));
+		return Quotas.MethodQuota(votes,esc,Quotas::quotaStandar,Quotas::remaindersLargestRemainder);
 		
 	}	
 	
@@ -70,23 +65,14 @@ public final class Main {
 	 */
 	public static Map<String,Integer> HamiltonRel(Map<String,Integer> votes,int esc) throws Exception{
 		
-		Class<?>[] cArg=new Class[3];
-		cArg[0]=int.class;
-		cArg[1]=Map.class;
-		cArg[2]=Map.class;
-		
-		Class<?>[] cArg2=new Class[2];
-		cArg2[0]=int.class;
-		cArg2[1]=Map.class;
-		
-		return Quota.MethodQuota(votes,esc,Quota.class.getDeclaredMethod("quotaStandar", cArg2),Quota.class.getDeclaredMethod("remaindersLargestRemainderRelative",cArg));
+		return Quotas.MethodQuota(votes,esc,Quotas::quotaStandar,Quotas::remaindersLargestRemainderRelative);
 		
 	}
 	
 	public static void main(String [] args){
 		int esc=352;
-		Map<String,Integer> pob=new HashMap<String,Integer>();
-		Map<String,Integer> res=new HashMap<String,Integer>();
+		Map<String,Integer> pob=new HashMap<>();
+		Map<String,Integer> res;
 		pob.put("Alava",321932);
 		pob.put("Albacete",395007);
 		pob.put("Alicante",1842963);
@@ -146,6 +132,12 @@ public final class Main {
 			System.out.println(res);
 			res=Danes(pob,esc);
 			System.out.println(res);
+			Iterator<Integer> it=res.values().iterator();
+			int sum=0;
+			while(it.hasNext()){
+				sum+=it.next();
+			}
+			System.out.println(sum);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

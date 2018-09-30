@@ -1,6 +1,5 @@
-package com.dan232.elections;
+package dan232.elections.quo;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -15,7 +14,7 @@ import java.util.Set;
  * @author daconcep
  *
  */
-public final class Quota {
+public final class Quotas {
 
 	/**
 	 * @param votes: represents the votes given to each party involved.
@@ -25,16 +24,13 @@ public final class Quota {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Map<String,Integer> MethodQuota(Map<String,Integer> votes,int esc,Method quot,Method mm) throws Exception{
-		Iterator<String> it=votes.keySet().iterator();
-		Map<String,Double> aux=new HashMap<String,Double>();
-		Map<String,Integer> res=new HashMap<String,Integer>();
+	public static Map<String,Integer> MethodQuota(Map<String,Integer> votes,int esc,Quota quot,Remainder mm) throws Exception{
+		Iterator<String> it;
+		Map<String,Double> aux=new HashMap<>();
+		Map<String,Integer> res=new HashMap<>();
 		it=votes.keySet().iterator();
 		
-		Object[] ob2 =new Object[2];
-		ob2[0]=esc;
-		ob2[1]=votes;
-		double D=(Double) quot.invoke(null, ob2);
+		double D=quot.apply(votes,esc);
 		while(it.hasNext()){
 			String k=it.next();
 			int R=(int)Math.floor(votes.get(k)/D);
@@ -42,11 +38,7 @@ public final class Quota {
 			esc-=R;
 			aux.put(k, votes.get(k)/D-R);
 		}
-		Object[] ob =new Object[3];
-		ob[0]=esc;
-		ob[1]=aux;
-		ob[2]=res;
-		mm.invoke(null, ob);
+		mm.apply(esc,aux,res);
 		return res;
 	}
 	
@@ -113,7 +105,7 @@ public final class Quota {
 	 * @param votes: represents the votes given to each party involved.
 	 * @return
 	 */
-	public static double quotaStandar(int esc, Map<String,Integer> votes){
+	public static double quotaStandar(Map<String,Integer> votes,int esc){
 		int totalV=0;
 		Iterator<String> it=votes.keySet().iterator();
 		while(it.hasNext()){
@@ -128,7 +120,7 @@ public final class Quota {
 	 * @param votes: represents the votes given to each party involved.
 	 * @return
 	 */
-	public static double quotaDroop(int esc, Map<String,Integer> votes){
+	public static double quotaDroop(Map<String,Integer> votes,int esc){
 		int totalV=0;
 		Iterator<String> it=votes.keySet().iterator();
 		while(it.hasNext()){
