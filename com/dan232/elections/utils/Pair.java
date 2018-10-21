@@ -4,7 +4,7 @@ import java.util.Map.Entry;
 
 public class Pair<T> implements Entry<T, Double>, Comparable<Pair<T>>{
 	
-	private T cad;
+	private final T cad;
 	private double num;
 
 	public Pair(T st,double d) {

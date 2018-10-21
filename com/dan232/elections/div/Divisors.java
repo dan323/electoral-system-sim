@@ -32,7 +32,7 @@ public final class Divisors {
 	}
 	
 	/**
-	 * @param n
+	 * @param n step
 	 * @return Sqrt(n*(n+1))
 	 */
 	public static double divisorsHill(int n){
@@ -43,7 +43,7 @@ public final class Divisors {
 	}
 	
 	/**
-	 * @param n
+	 * @param n step
 	 * @return 2/(1/n+1/(n+1))
 	 */
 	public static double divisorsDean(int n){
@@ -54,26 +54,26 @@ public final class Divisors {
 	}
 	
 	/**
-	 * @param n
+	 * @param n step
 	 * @return n+1/2
 	 */
 	public static double divisorsSaint(int n){
-		return n+1/2;
+		return n+1.0/2;
 	}
 	
 	/**
-	 * @param n
+	 * @param n step
 	 * @return n+1/2
 	 */
 	public static double divisorsSaintMod(int n){
 		if (n==0){
 			return 0.7;
 		}
-		return n+1/2;
+		return n+1.0/2;
 	}
 	
 	/**
-	 * @param n
+	 * @param n step
 	 * @return n+2
 	 */
 	public static double divisorsImperialii(int n){
@@ -81,7 +81,7 @@ public final class Divisors {
 	}
 	
 	/**
-	 * @param n
+	 * @param n step
 	 * @return 2^n
 	 */
 	public static double divisorsMacau(int n){
@@ -89,7 +89,7 @@ public final class Divisors {
 	}
 	
 	/**
-	 * @param n
+	 * @param n step
 	 * @return n^0.9
 	 */
 	public static double divisorsEstonia(int n){
@@ -97,7 +97,7 @@ public final class Divisors {
 	}
 	
 	/**
-	 * @param n
+	 * @param n step
 	 * @return n+1
 	 */
 	public static double divisorsDHont(int n){
@@ -105,11 +105,11 @@ public final class Divisors {
 	}
 	
 	/**
-	 * @param n
+	 * @param n step
 	 * @return n+1/3
 	 */
 	public static double divisorsDin(int n){
-		return n+1/3;
+		return n+1.0/3;
 	}
 
 }

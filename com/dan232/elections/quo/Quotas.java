@@ -21,10 +21,9 @@ public final class Quotas {
 	 * @param esc: number of pieces to divide among the parties.
 	 * @param mm: method that distributes the remainder votes.
 	 * @param quot: quota function of the method
-	 * @return
-	 * @throws Exception
+	 * @return map with seats distributed
 	 */
-	public static Map<String,Integer> MethodQuota(Map<String,Integer> votes,int esc,Quota quot,Remainder mm) throws Exception{
+	public static Map<String,Integer> MethodQuota(Map<String,Integer> votes,int esc,Quota quot,Remainder mm){
 		Iterator<String> it;
 		Map<String,Double> aux=new HashMap<>();
 		Map<String,Integer> res=new HashMap<>();
@@ -48,7 +47,7 @@ public final class Quotas {
 	 * @param mint: previous apportionment.
 	 */
 	public static void remaindersLargestRemainder(int esc,Map<String,Double> dob,Map<String,Integer> mint){
-		Set<String> L=new HashSet<String>(dob.keySet());
+		Set<String> L=new HashSet<>(dob.keySet());
 		while (esc>0){
 			Iterator<String> d=L.iterator();
 			String x=L.iterator().next();
@@ -72,9 +71,7 @@ public final class Quotas {
 	 * @param mint: previous apportionment.
 	 */
 	public static void remaindersLargestRemainderRelative(int esc,Map<String,Double> dob,Map<String,Integer> mint){
-		Iterator<String> it=dob.keySet().iterator();
-		while(it.hasNext()){
-			String st=it.next();
+		for (String st:dob.keySet()	) {
 			dob.put(st, dob.get(st)/mint.get(st));
 		}
 		remaindersLargestRemainder(esc,dob,mint);
@@ -87,7 +84,7 @@ public final class Quotas {
 	 * @param mint: previous apportionment.
 	 */
 	public static void remaindersWinnerAll(int esc,Map<String,Double> dob,Map<String,Integer> mint){
-		Set<String> L=new HashSet<String>(dob.keySet());
+		Set<String> L=new HashSet<>(dob.keySet());
 		Iterator<String> d=L.iterator();
 		String x=L.iterator().next();
 		while (d.hasNext()){
@@ -103,13 +100,12 @@ public final class Quotas {
 	/**
 	 * @param esc: number of pieces to divide among the parties.
 	 * @param votes: represents the votes given to each party involved.
-	 * @return
+	 * @return standard quota
 	 */
-	public static double quotaStandar(Map<String,Integer> votes,int esc){
+	public static double quotaStandard(Map<String,Integer> votes,int esc){
 		int totalV=0;
 		Iterator<String> it=votes.keySet().iterator();
-		while(it.hasNext()){
-			String k=it.next();
+		for(String k: votes.keySet()){
 			totalV+=votes.get(k);
 		}
 		return totalV/((double)esc);
@@ -118,13 +114,11 @@ public final class Quotas {
 	/**
 	 * @param esc: number of pieces to divide among the parties.
 	 * @param votes: represents the votes given to each party involved.
-	 * @return
+	 * @return droop quota
 	 */
 	public static double quotaDroop(Map<String,Integer> votes,int esc){
 		int totalV=0;
-		Iterator<String> it=votes.keySet().iterator();
-		while(it.hasNext()){
-			String k=it.next();
+		for(String k: votes.keySet()){
 			totalV+=votes.get(k);
 		}
 		return (totalV/((double)esc+1))+1;

@@ -13,15 +13,15 @@ import java.util.HashMap;
  * @author daconcep
  *
  */
+@SuppressWarnings("ALL")
 public final class Main {
 	
 	/**
 	 * @param votes: represents the votes given to each party involved.
 	 * @param esc: number of pieces to divide among the parties.
 	 * @return
-	 * @throws Exception
 	 */
-	public static Map<String,Integer> Webster(Map<String,Integer> votes, int esc) throws Exception{
+	public static Map<String,Integer> Webster(Map<String,Integer> votes, int esc) {
 		return Divisors.MethodDivisor(votes,esc,Divisors::divisorsSaint);
 	}
 	
@@ -29,9 +29,8 @@ public final class Main {
 	 * @param votes: represents the votes given to each party involved.
 	 * @param esc: number of pieces to divide among the parties.
 	 * @return
-	 * @throws Exception
 	 */
-	public static Map<String,Integer> Jefferson(Map<String,Integer> votes, int esc) throws Exception{
+	public static Map<String,Integer> Jefferson(Map<String,Integer> votes, int esc) {
 		return Divisors.MethodDivisor(votes,esc,Divisors::divisorsDHont);
 	}
 	
@@ -41,7 +40,7 @@ public final class Main {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Map<String,Integer> Danes(Map<String,Integer> votes, int esc) throws Exception{
+	public static Map<String,Integer> Danes(Map<String,Integer> votes, int esc) {
 		return Divisors.MethodDivisor(votes,esc,Divisors::divisorsDin);
 	}
 	
@@ -49,11 +48,10 @@ public final class Main {
 	 * @param votes: represents the votes given to each party involved.
 	 * @param esc: number of pieces to divide among the parties.
 	 * @return
-	 * @throws Exception
 	 */
-	public static Map<String,Integer> Hamilton(Map<String,Integer> votes,int esc) throws Exception{
+	public static Map<String,Integer> Hamilton(Map<String,Integer> votes,int esc) {
 		
-		return Quotas.MethodQuota(votes,esc,Quotas::quotaStandar,Quotas::remaindersLargestRemainder);
+		return Quotas.MethodQuota(votes,esc,Quotas::quotaStandard,Quotas::remaindersLargestRemainder);
 		
 	}	
 	
@@ -61,11 +59,11 @@ public final class Main {
 	 * @param votes: represents the votes given to each party involved.
 	 * @param esc: number of pieces to divide among the parties.
 	 * @return
-	 * @throws Exception
 	 */
-	public static Map<String,Integer> HamiltonRel(Map<String,Integer> votes,int esc) throws Exception{
+	@SuppressWarnings("WeakerAccess")
+	public static Map<String,Integer> HamiltonRel(Map<String,Integer> votes, int esc) {
 		
-		return Quotas.MethodQuota(votes,esc,Quotas::quotaStandar,Quotas::remaindersLargestRemainderRelative);
+		return Quotas.MethodQuota(votes,esc,Quotas::quotaStandard,Quotas::remaindersLargestRemainderRelative);
 		
 	}
 	
