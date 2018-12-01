@@ -1,4 +1,4 @@
-package dan232.elections.utils;
+package danieldlc.elelections.utils;
 
 import java.util.HashMap;
 import java.util.Map;

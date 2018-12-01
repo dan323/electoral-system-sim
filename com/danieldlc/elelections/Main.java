@@ -1,7 +1,7 @@
-package dan232.elections;
+package danieldlc.elelections;
 
-import dan232.elections.div.Divisors;
-import dan232.elections.quo.Quotas;
+import danieldlc.elelections.div.Divisors;
+import danieldlc.elelections.quo.Quotas;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -21,7 +21,7 @@ public final class Main {
 	 * @param esc: number of pieces to divide among the parties.
 	 * @return
 	 */
-	public static Map<String,Integer> Webster(Map<String,Integer> votes, int esc) {
+	public static Map<String,Integer> methodWebster(Map<String,Integer> votes, int esc) {
 		return Divisors.MethodDivisor(votes,esc,Divisors::divisorsSaint);
 	}
 	
@@ -30,7 +30,7 @@ public final class Main {
 	 * @param esc: number of pieces to divide among the parties.
 	 * @return
 	 */
-	public static Map<String,Integer> Jefferson(Map<String,Integer> votes, int esc) {
+	public static Map<String,Integer> methodJefferson(Map<String,Integer> votes, int esc) {
 		return Divisors.MethodDivisor(votes,esc,Divisors::divisorsDHont);
 	}
 	
@@ -40,7 +40,7 @@ public final class Main {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Map<String,Integer> Danes(Map<String,Integer> votes, int esc) {
+	public static Map<String,Integer> methodDanes(Map<String,Integer> votes, int esc) {
 		return Divisors.MethodDivisor(votes,esc,Divisors::divisorsDin);
 	}
 	
@@ -49,7 +49,7 @@ public final class Main {
 	 * @param esc: number of pieces to divide among the parties.
 	 * @return
 	 */
-	public static Map<String,Integer> Hamilton(Map<String,Integer> votes,int esc) {
+	public static Map<String,Integer> methodHamilton(Map<String,Integer> votes,int esc) {
 		
 		return Quotas.MethodQuota(votes,esc,Quotas::quotaStandard,Quotas::remaindersLargestRemainder);
 		
@@ -61,7 +61,7 @@ public final class Main {
 	 * @return
 	 */
 	@SuppressWarnings("WeakerAccess")
-	public static Map<String,Integer> HamiltonRel(Map<String,Integer> votes, int esc) {
+	public static Map<String,Integer> methodHamiltonRel(Map<String,Integer> votes, int esc) {
 		
 		return Quotas.MethodQuota(votes,esc,Quotas::quotaStandard,Quotas::remaindersLargestRemainderRelative);
 		
@@ -124,11 +124,11 @@ public final class Main {
 		pob.put("Ceuta", 84726);
 		pob.put("Melilla", 84621);
 		try {
-			res=HamiltonRel(pob,esc);
+			res=methodHamiltonRel(pob,esc);
 			System.out.println(res);
-			res=Hamilton(pob,esc);
+			res=methodHamilton(pob,esc);
 			System.out.println(res);
-			res=Danes(pob,esc);
+			res=methodDanes(pob,esc);
 			System.out.println(res);
 			Iterator<Integer> it=res.values().iterator();
 			int sum=0;

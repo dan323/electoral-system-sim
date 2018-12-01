@@ -1,4 +1,4 @@
-package dan232.elections.div;
+package danieldlc.elelections.div;
 
 import java.util.function.Function;
 
