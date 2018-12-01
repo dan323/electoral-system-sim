@@ -1,7 +1,7 @@
-package danieldlc.elelections;
+package danieldlc.elections;
 
-import danieldlc.elelections.div.Divisors;
-import danieldlc.elelections.quo.Quotas;
+import danieldlc.elections.div.Divisors;
+import danieldlc.elections.quo.Quotas;
 
 import java.util.Iterator;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package danieldlc.elelections.quo;
+package danieldlc.elections.quo;
 
 import java.util.Map;
 

@@ -1,7 +1,7 @@
-package danieldlc.elelections.div;
+package danieldlc.elections.div;
 
-import danieldlc.elelections.utils.KeyCountingCollector;
-import danieldlc.elelections.utils.Pair;
+import danieldlc.elections.utils.KeyCountingCollector;
+import danieldlc.elections.utils.Pair;
 
 import java.util.Map;
 import java.util.stream.IntStream;

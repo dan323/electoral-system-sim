@@ -1,4 +1,4 @@
-package danieldlc.elelections.quo;
+package danieldlc.elections.quo;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,7 +23,7 @@ public final class Quotas {
 	 * @param quot: quota function of the method
 	 * @return map with seats distributed
 	 */
-	public static Map<String,Integer> MethodQuota(Map<String,Integer> votes,int esc,Quota quot,Remainder mm){
+	public static Map<String,Integer> MethodQuota(Map<String,Integer> votes, int esc, Quota quot, Remainder mm){
 		Iterator<String> it;
 		Map<String,Double> aux=new HashMap<>();
 		Map<String,Integer> res=new HashMap<>();

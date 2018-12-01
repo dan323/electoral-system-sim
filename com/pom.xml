@@ -4,7 +4,7 @@
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>danieldlc</groupId>
+    <groupId>danieldlc.elections</groupId>
     <artifactId>electoral-system-sim</artifactId>
     <version>2.0</version>
     <build>
@@ -19,4 +19,11 @@
             </plugin>
         </plugins>
     </build>
+    <dependencies>
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+        <scope>test</scope>
+    </dependency></dependencies>
 </project>

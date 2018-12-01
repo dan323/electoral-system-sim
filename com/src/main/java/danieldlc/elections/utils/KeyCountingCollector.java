@@ -1,4 +1,4 @@
-package danieldlc.elelections.utils;
+package danieldlc.elections.utils;
 
 import java.util.Map.Entry;
 
