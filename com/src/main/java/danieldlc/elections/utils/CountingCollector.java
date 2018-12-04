@@ -9,8 +9,6 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class CountingCollector<S, T> implements Collector<S, Map<T, Integer>, Map<T, Integer>> {
 
@@ -19,7 +17,7 @@ public class CountingCollector<S, T> implements Collector<S, Map<T, Integer>, Ma
 
     public CountingCollector(Function<S, T> function, boolean parallel) {
         this.fun = function;
-        this.parallel=parallel;
+        this.parallel = parallel;
     }
 
     private static <R> Map<R, Integer> combineParallel(Map<R, Integer> m1, Map<R, Integer> m2) {
@@ -30,7 +28,7 @@ public class CountingCollector<S, T> implements Collector<S, Map<T, Integer>, Ma
 
     private static <R> Map<R, Integer> combine(Map<R, Integer> m1, Map<R, Integer> m2) {
         Map<R, Integer> m3 = new HashMap<>(m1);
-        m2.forEach((key,value) -> updateMap(m3, key, value));
+        m2.forEach((key, value) -> updateMap(m3, key, value));
         return m3;
     }
 
@@ -63,7 +61,7 @@ public class CountingCollector<S, T> implements Collector<S, Map<T, Integer>, Ma
 
     @Override
     public BinaryOperator<Map<T, Integer>> combiner() {
-        return parallel?CountingCollector::combineParallel:CountingCollector::combine;
+        return parallel ? CountingCollector::combineParallel : CountingCollector::combine;
     }
 
     @Override
@@ -73,7 +71,7 @@ public class CountingCollector<S, T> implements Collector<S, Map<T, Integer>, Ma
 
     @Override
     public Set<Characteristics> characteristics() {
-        return Stream.of(Characteristics.CONCURRENT, Characteristics.IDENTITY_FINISH).collect(Collectors.toSet());
+        return Set.of(Characteristics.CONCURRENT, Characteristics.IDENTITY_FINISH);
     }
 
 }
