@@ -22,16 +22,16 @@ public class CountingCollectorTest {
 
     @Before
     public void setUp() {
-        for (int i = 0; i < random.nextInt(1000000)+100000; i++) {
+        for (int i = 0; i < random.nextInt(1000000) + 100000; i++) {
             list.add("var" + random.nextInt(100));
         }
-        LOG.log(Level.INFO,"The list has size {0}",list.size());
+        LOG.log(Level.INFO, "The list has size {0}", list.size());
     }
 
 
     @Test
     public void sequentialCountingCollectorTesting() {
-        Map<String, Integer> solution = list.stream().collect(new CountingCollector<>(Function.identity(),false));
+        Map<String, Integer> solution = list.stream().collect(new CountingCollector<>(Function.identity(), false));
 
         Map<String, Integer> map = list.stream()
                 .collect(Collectors.groupingBy(Function.identity()))
@@ -40,14 +40,14 @@ public class CountingCollectorTest {
 
         Assert.assertEquals(solution, map);
 
-        solution = list.parallelStream().collect(new CountingCollector<>(Function.identity(),false));
+        solution = list.parallelStream().collect(new CountingCollector<>(Function.identity(), false));
 
         Assert.assertEquals(solution, map);
     }
 
     @Test
     public void parallelCountingCollectorTesting() {
-        Map<String, Integer> solution = list.stream().collect(new CountingCollector<>(Function.identity(),true));
+        Map<String, Integer> solution = list.stream().collect(new CountingCollector<>(Function.identity(), true));
 
         Map<String, Integer> map = list.stream()
                 .collect(Collectors.groupingBy(Function.identity()))
@@ -56,7 +56,7 @@ public class CountingCollectorTest {
 
         Assert.assertEquals(solution, map);
 
-        solution= list.parallelStream().collect(new CountingCollector<>(Function.identity(),true));
+        solution = list.parallelStream().collect(new CountingCollector<>(Function.identity(), true));
 
         Assert.assertEquals(solution, map);
     }
