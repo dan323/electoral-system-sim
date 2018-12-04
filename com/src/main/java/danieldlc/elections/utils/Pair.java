@@ -2,12 +2,18 @@ package danieldlc.elections.utils;
 
 import java.util.Map.Entry;
 
-public class Pair<T> implements Entry<T, Double>, Comparable<Pair<T>>{
+/**
+ * An implementation of {@link java.util.Map.Entry} where the values have an order and
+ * this order is extended to the whole class.
+ * @param <T> Type of keys
+ * @param <S> Type of values
+ */
+public class Pair<T,S extends Comparable<S>> implements Entry<T, S>, Comparable<Pair<T,S>>{
 	
 	private final T cad;
-	private double num;
+	private S num;
 
-	public Pair(T st,double d) {
+	public Pair(T st,S d) {
 		cad=st;
 		num=d;
 	}
@@ -18,24 +24,34 @@ public class Pair<T> implements Entry<T, Double>, Comparable<Pair<T>>{
 	}
 
 	@Override
-	public Double getValue() {
+	public S getValue() {
 		return num;
 	}
 
 	@Override
-	public Double setValue(Double value) {
-		double dob=this.num;
+	public S setValue(S value) {
+		S dob=this.num;
 		num=value;
 		return dob;
 	}
 
 	public String toString(){
-		return getKey().toString()+" -> "+getValue();
+		return getKey()+" -> "+getValue();
 	}
 
 	@Override
-	public int compareTo(Pair<T> o) {
-		return Double.compare(o.num, num);
+	public int compareTo(Pair<T,S> o) {
+		return o.num.compareTo(num);
+	}
+
+	@Override
+	public boolean equals(Object obj){
+		return (obj instanceof Pair) && ((Pair)obj).getKey().equals(getKey()) && ((Pair)obj).getValue().equals(getValue());
+	}
+
+	@Override
+	public int hashCode(){
+		return 10*cad.hashCode()+11*num.hashCode();
 	}
 
 }

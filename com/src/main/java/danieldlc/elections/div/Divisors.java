@@ -1,6 +1,6 @@
 package danieldlc.elections.div;
 
-import danieldlc.elections.utils.KeyCountingCollector;
+import danieldlc.elections.utils.CustomCollectors;
 import danieldlc.elections.utils.Pair;
 
 import java.util.Map;
@@ -14,6 +14,9 @@ import java.util.stream.IntStream;
  *
  */
 public final class Divisors {
+
+	private Divisors(){
+	}
 	
 	/**
 	 * @param votes: represents the votes given to each party involved.
@@ -21,14 +24,13 @@ public final class Divisors {
 	 * @param div: method that represent the list of divisors; i.e. a strictly growing function from int to double.
 	 * @return a partition of esc among the parties involved with respect to the votes.
 	 */
-	public static Map<String,Integer> MethodDivisor(Map<String,Integer> votes, int esc, Divisor div){
+	public static Map<String,Integer> methodDivisor(Map<String,Integer> votes, int esc, Divisor div){
 		return votes.entrySet().parallelStream()
-				.flatMap((p)->IntStream.rangeClosed(1,esc)
+				.flatMap(p->IntStream.range(0,esc)
 						.mapToObj(n->(new Pair<>(p.getKey(),p.getValue()/div.apply(n)))))
-				.sequential()
 				.sorted(Pair::compareTo)
 				.limit(esc)
-				.collect(new KeyCountingCollector<>());
+				.collect(CustomCollectors.toKeyCountingMap());
 	}
 	
 	/**
@@ -39,7 +41,7 @@ public final class Divisors {
 		if (n==0){
 			return 0.001;
 		}
-		return Math.sqrt(n*(n+1));
+		return Math.sqrt(n*(n+1.0));
 	}
 	
 	/**
@@ -77,7 +79,7 @@ public final class Divisors {
 	 * @return n+2
 	 */
 	public static double divisorsImperialii(int n){
-		return 2+n;
+		return 2.0+n;
 	}
 	
 	/**
@@ -85,7 +87,7 @@ public final class Divisors {
 	 * @return 2^n
 	 */
 	public static double divisorsMacau(int n){
-		return Math.pow(2, n);
+		return Math.pow(2, n+1.0);
 	}
 	
 	/**
@@ -93,7 +95,10 @@ public final class Divisors {
 	 * @return n^0.9
 	 */
 	public static double divisorsEstonia(int n){
-		return Math.pow(n, 0.9);
+		if (n==0){
+			return 1;
+		}
+		return Math.pow(n+1.0, 0.9);
 	}
 	
 	/**
@@ -101,7 +106,7 @@ public final class Divisors {
 	 * @return n+1
 	 */
 	public static double divisorsDHont(int n){
-		return n+1;
+		return n+1.0;
 	}
 	
 	/**

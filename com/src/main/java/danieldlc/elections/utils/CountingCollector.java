@@ -3,6 +3,7 @@ package danieldlc.elections.utils;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -11,12 +12,34 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CountingCollector<S,T> implements Collector<S, Map<T,Integer>, Map<T,Integer>> {
+public class CountingCollector<S, T> implements Collector<S, Map<T, Integer>, Map<T, Integer>> {
 
-    private final Function<S,T> fun;
+    private final Function<S, T> fun;
+    private final boolean parallel;
 
-    public CountingCollector(Function<S,T> function){
-        this.fun=function;
+    public CountingCollector(Function<S, T> function, boolean parallel) {
+        this.fun = function;
+        this.parallel=parallel;
+    }
+
+    private static <R> Map<R, Integer> combineParallel(Map<R, Integer> m1, Map<R, Integer> m2) {
+        Map<R, Integer> m3 = new ConcurrentHashMap<>(m1);
+        m2.entrySet().parallelStream().forEach(e -> updateMap(m3, e.getKey(), e.getValue()));
+        return m3;
+    }
+
+    private static <R> Map<R, Integer> combine(Map<R, Integer> m1, Map<R, Integer> m2) {
+        Map<R, Integer> m3 = new HashMap<>(m1);
+        m2.forEach((key,value) -> updateMap(m3, key, value));
+        return m3;
+    }
+
+    private static <U> void updateMap(Map<U, Integer> m3, U st, int value) {
+        if (m3.containsKey(st)) {
+            m3.put(st, m3.get(st) + value);
+        } else {
+            m3.put(st, value);
+        }
     }
 
     @Override
@@ -24,33 +47,23 @@ public class CountingCollector<S,T> implements Collector<S, Map<T,Integer>, Map<
         return HashMap::new;
     }
 
+    private void accumulate(Map<T, Integer> map, S t) {
+        T key = fun.apply(t);
+        if (map.containsKey(key)) {
+            map.put(key, map.get(key) + 1);
+        } else {
+            map.put(key, 1);
+        }
+    }
+
     @Override
     public BiConsumer<Map<T, Integer>, S> accumulator() {
-        return (Map<T, Integer> map, S t)->{
-            if (map.containsKey(fun.apply(t))) {
-                map.put(fun.apply(t), map.get(fun.apply(t))+1);
-            }
-            else {
-                map.put(fun.apply(t), 1);
-            }
-        };
+        return this::accumulate;
     }
 
     @Override
     public BinaryOperator<Map<T, Integer>> combiner() {
-        return (Map<T, Integer> m1, Map<T, Integer> m2)-> {
-            Map<T, Integer> m3 = new HashMap<>(m1);
-            m2.entrySet().parallelStream().forEach(e->{
-                T st=e.getKey();
-                if (m3.containsKey(st)) {
-                    m3.put(st, m3.get(st)+e.getValue());
-                }
-                else {
-                    m3.put(st, 1);
-                }
-            });
-            return m3;
-        };
+        return parallel?CountingCollector::combineParallel:CountingCollector::combine;
     }
 
     @Override
@@ -60,7 +73,7 @@ public class CountingCollector<S,T> implements Collector<S, Map<T,Integer>, Map<
 
     @Override
     public Set<Characteristics> characteristics() {
-        return Stream.of(Characteristics.CONCURRENT,Characteristics.IDENTITY_FINISH).collect(Collectors.toSet());
+        return Stream.of(Characteristics.CONCURRENT, Characteristics.IDENTITY_FINISH).collect(Collectors.toSet());
     }
 
 }

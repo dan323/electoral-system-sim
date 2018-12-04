@@ -6,6 +6,8 @@ import danieldlc.elections.quo.Quotas;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class of execution
@@ -13,8 +15,9 @@ import java.util.HashMap;
  * @author daconcep
  *
  */
-@SuppressWarnings("ALL")
 public final class Main {
+
+	private static final Logger LOG=Logger.getLogger("Elecciones");
 	
 	/**
 	 * @param votes: represents the votes given to each party involved.
@@ -22,7 +25,7 @@ public final class Main {
 	 * @return
 	 */
 	public static Map<String,Integer> methodWebster(Map<String,Integer> votes, int esc) {
-		return Divisors.MethodDivisor(votes,esc,Divisors::divisorsSaint);
+		return Divisors.methodDivisor(votes,esc,Divisors::divisorsSaint);
 	}
 	
 	/**
@@ -31,7 +34,7 @@ public final class Main {
 	 * @return
 	 */
 	public static Map<String,Integer> methodJefferson(Map<String,Integer> votes, int esc) {
-		return Divisors.MethodDivisor(votes,esc,Divisors::divisorsDHont);
+		return Divisors.methodDivisor(votes,esc,Divisors::divisorsDHont);
 	}
 	
 	/**
@@ -41,7 +44,7 @@ public final class Main {
 	 * @throws Exception
 	 */
 	public static Map<String,Integer> methodDanes(Map<String,Integer> votes, int esc) {
-		return Divisors.MethodDivisor(votes,esc,Divisors::divisorsDin);
+		return Divisors.methodDivisor(votes,esc,Divisors::divisorsDin);
 	}
 	
 	/**
@@ -51,7 +54,7 @@ public final class Main {
 	 */
 	public static Map<String,Integer> methodHamilton(Map<String,Integer> votes,int esc) {
 		
-		return Quotas.MethodQuota(votes,esc,Quotas::quotaStandard,Quotas::remaindersLargestRemainder);
+		return Quotas.methodQuota(votes,esc,Quotas::quotaStandard,Quotas::remaindersLargestRemainder);
 		
 	}	
 	
@@ -63,7 +66,7 @@ public final class Main {
 	@SuppressWarnings("WeakerAccess")
 	public static Map<String,Integer> methodHamiltonRel(Map<String,Integer> votes, int esc) {
 		
-		return Quotas.MethodQuota(votes,esc,Quotas::quotaStandard,Quotas::remaindersLargestRemainderRelative);
+		return Quotas.methodQuota(votes,esc,Quotas::quotaStandard,Quotas::remaindersLargestRemainderRelative);
 		
 	}
 	
@@ -125,20 +128,19 @@ public final class Main {
 		pob.put("Melilla", 84621);
 		try {
 			res=methodHamiltonRel(pob,esc);
-			System.out.println(res);
+			LOG.log(Level.INFO,"{0}",res);
 			res=methodHamilton(pob,esc);
-			System.out.println(res);
+			LOG.log(Level.INFO,"{0}",res);
 			res=methodDanes(pob,esc);
-			System.out.println(res);
+			LOG.log(Level.INFO,"{0}",res);
 			Iterator<Integer> it=res.values().iterator();
 			int sum=0;
 			while(it.hasNext()){
 				sum+=it.next();
 			}
-			System.out.println(sum);
+			LOG.log(Level.INFO,"The total is {0}",sum);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.log(Level.SEVERE,e.getMessage(),e);
 		}
 	}
 	

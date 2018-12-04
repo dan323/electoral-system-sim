@@ -16,6 +16,9 @@ import java.util.Set;
  */
 public final class Quotas {
 
+	private Quotas(){
+	}
+
 	/**
 	 * @param votes: represents the votes given to each party involved.
 	 * @param esc: number of pieces to divide among the parties.
@@ -23,19 +26,19 @@ public final class Quotas {
 	 * @param quot: quota function of the method
 	 * @return map with seats distributed
 	 */
-	public static Map<String,Integer> MethodQuota(Map<String,Integer> votes, int esc, Quota quot, Remainder mm){
+	public static Map<String,Integer> methodQuota(Map<String,Integer> votes, int esc, Quota quot, Remainder mm){
 		Iterator<String> it;
 		Map<String,Double> aux=new HashMap<>();
 		Map<String,Integer> res=new HashMap<>();
 		it=votes.keySet().iterator();
 		
-		double D=quot.apply(votes,esc);
+		double d=quot.apply(votes,esc);
 		while(it.hasNext()){
 			String k=it.next();
-			int R=(int)Math.floor(votes.get(k)/D);
-			res.put(k, R);
-			esc-=R;
-			aux.put(k, votes.get(k)/D-R);
+			int r=(int)Math.floor(votes.get(k)/d);
+			res.put(k, r);
+			esc-=r;
+			aux.put(k, votes.get(k)/d-r);
 		}
 		mm.apply(esc,aux,res);
 		return res;
@@ -47,10 +50,10 @@ public final class Quotas {
 	 * @param mint: previous apportionment.
 	 */
 	public static void remaindersLargestRemainder(int esc,Map<String,Double> dob,Map<String,Integer> mint){
-		Set<String> L=new HashSet<>(dob.keySet());
+		Set<String> l=new HashSet<>(dob.keySet());
 		while (esc>0){
-			Iterator<String> d=L.iterator();
-			String x=L.iterator().next();
+			Iterator<String> d=l.iterator();
+			String x=l.iterator().next();
 			while (d.hasNext()){
 				String s=d.next();
 				Double dd=dob.get(s);
@@ -59,7 +62,7 @@ public final class Quotas {
 				}
 			}
 			mint.put(x, mint.get(x)+1);
-			L.remove(x);
+			l.remove(x);
 			esc--;
 		}
 	}
@@ -71,8 +74,8 @@ public final class Quotas {
 	 * @param mint: previous apportionment.
 	 */
 	public static void remaindersLargestRemainderRelative(int esc,Map<String,Double> dob,Map<String,Integer> mint){
-		for (String st:dob.keySet()	) {
-			dob.put(st, dob.get(st)/mint.get(st));
+		for (Map.Entry<String,Double> st:dob.entrySet()	) {
+			dob.put(st.getKey(), st.getValue()/mint.get(st.getKey()));
 		}
 		remaindersLargestRemainder(esc,dob,mint);
 	}
@@ -84,9 +87,9 @@ public final class Quotas {
 	 * @param mint: previous apportionment.
 	 */
 	public static void remaindersWinnerAll(int esc,Map<String,Double> dob,Map<String,Integer> mint){
-		Set<String> L=new HashSet<>(dob.keySet());
-		Iterator<String> d=L.iterator();
-		String x=L.iterator().next();
+		Set<String> l=new HashSet<>(dob.keySet());
+		Iterator<String> d=l.iterator();
+		String x=l.iterator().next();
 		while (d.hasNext()){
 			String s=d.next();
 			Double dd=dob.get(s);
@@ -104,9 +107,8 @@ public final class Quotas {
 	 */
 	public static double quotaStandard(Map<String,Integer> votes,int esc){
 		int totalV=0;
-		Iterator<String> it=votes.keySet().iterator();
-		for(String k: votes.keySet()){
-			totalV+=votes.get(k);
+		for(Map.Entry<String,Integer> k: votes.entrySet()){
+			totalV+=k.getValue();
 		}
 		return totalV/((double)esc);
 	}
@@ -118,8 +120,8 @@ public final class Quotas {
 	 */
 	public static double quotaDroop(Map<String,Integer> votes,int esc){
 		int totalV=0;
-		for(String k: votes.keySet()){
-			totalV+=votes.get(k);
+		for(Map.Entry<String,Integer> k: votes.entrySet()){
+			totalV+=k.getValue();
 		}
 		return (totalV/((double)esc+1))+1;
 	}
