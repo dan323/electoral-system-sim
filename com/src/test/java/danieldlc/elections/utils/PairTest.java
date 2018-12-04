@@ -11,6 +11,8 @@ public class PairTest {
     public void pairTest(){
         Assert.assertEquals("Key",pair.getKey());
         Assert.assertEquals("Value",pair.getValue());
+        pair.setValue("Value2");
+        Assert.assertEquals("Value2",pair.getValue());
     }
 
     @Test
@@ -24,5 +26,20 @@ public class PairTest {
     @Test
     public void toStringPairTest(){
         Assert.assertEquals("Key -> Value",pair.toString());
+    }
+
+    @Test
+    public void equalsPairTest(){
+        Assert.assertEquals(pair, new Pair<>(pair.getKey(),pair.getValue()));
+        Assert.assertNotEquals(pair, new Pair<>("A","B"));
+        Assert.assertNotEquals(pair,"Testing");
+        Assert.assertNotEquals(pair,new Pair<>(pair.getKey(),"B"));
+        Assert.assertNotEquals(pair,new Pair<>("A",pair.getValue()));
+    }
+
+    @Test
+    public void hashCodePairTest(){
+        Pair<String,String>  pair2=new Pair<>(pair.getKey(),pair.getValue());
+        Assert.assertEquals(pair2.hashCode(),pair.hashCode());
     }
 }
