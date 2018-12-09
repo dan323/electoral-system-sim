@@ -1,7 +1,7 @@
 package danieldlc.elections.systems.quo;
 
+import danieldlc.elections.simulations.PartyListPair;
 import danieldlc.elections.systems.Test;
-import danieldlc.utils.Pair;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +36,7 @@ public final class Quotas {
         double d = quot.apply(votes, esc);
         votes.entrySet().stream()
                 .map(e -> Map.entry(e.getKey(),
-                        new Pair<>((int) Math.floor(e.getValue() / d), e.getValue() / d - (int) Math.floor(e.getValue() / d))))
+                        Map.entry((int) Math.floor(e.getValue() / d), e.getValue() / d - (int) Math.floor(e.getValue() / d))))
                 .forEach(e -> {
                     res.put(e.getKey(), e.getValue().getKey());
                     aux.put(e.getKey(), e.getValue().getValue());
@@ -51,11 +51,11 @@ public final class Quotas {
      * @param dob:  remainders of the parties involved.
      * @param mint: previous apportionment.
      */
-    @Test(type=REMAINDER)
+    @Test(type = REMAINDER)
     public static void remaindersLargestRemainder(int esc, Map<String, Double> dob, Map<String, Integer> mint) {
 
         dob.entrySet().stream()
-                .map(e -> new Pair<>(e.getKey(), e.getKey()))
+                .map(e -> new PartyListPair<>(e.getKey(), e.getKey()))
                 .sorted()
                 .limit(esc)
                 .forEach(e -> mint.put(e.getKey(), mint.get(e.getKey()) + 1));
@@ -68,7 +68,7 @@ public final class Quotas {
      * @param dob:  remainders of the parties involved.
      * @param mint: previous apportionment.
      */
-    @Test(type=REMAINDER)
+    @Test(type = REMAINDER)
     public static void remaindersLargestRemainderRelative(int esc, Map<String, Double> dob, Map<String, Integer> mint) {
         dob = dob.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue() / mint.get(e.getKey())));
@@ -82,10 +82,10 @@ public final class Quotas {
      * @param dob:  remainders of the parties involved.
      * @param mint: previous apportionment.
      */
-    @Test(type=REMAINDER)
+    @Test(type = REMAINDER)
     public static void remaindersWinnerAll(int esc, Map<String, Double> dob, Map<String, Integer> mint) {
         dob.entrySet().stream()
-                .map(e -> new Pair<>(e.getKey(), e.getValue()))
+                .map(e -> new PartyListPair<>(e.getKey(), e.getValue()))
                 .sorted()
                 .limit(1)
                 .forEach(e -> mint.put(e.getKey(), mint.get(e.getKey()) + esc));
@@ -96,7 +96,7 @@ public final class Quotas {
      * @param votes: represents the votes given to each party involved.
      * @return standard quota
      */
-    @Test(type=QUOTA)
+    @Test(type = QUOTA)
     public static double quotaStandard(Map<String, Integer> votes, int esc) {
         int totalV = votes.values().stream().mapToInt(z -> z).sum();
         return totalV / ((double) esc);
@@ -107,7 +107,7 @@ public final class Quotas {
      * @param votes: represents the votes given to each party involved.
      * @return droop quota
      */
-    @Test(type=QUOTA)
+    @Test(type = QUOTA)
     public static double quotaDroop(Map<String, Integer> votes, int esc) {
         int totalV = votes.values().stream().mapToInt(z -> z).sum();
         return (totalV / ((double) esc + 1)) + 1;

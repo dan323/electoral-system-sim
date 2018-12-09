@@ -1,57 +1,75 @@
 package danieldlc.utils;
 
+import danieldlc.utils.comparators.RandomComparator;
+
+import java.util.*;
 import java.util.Map.Entry;
 
 /**
  * An implementation of {@link java.util.Map.Entry} where the values have an order and
- * this order is extended to the whole class.
+ * this order is extended to the whole class. The key is immutable, but the value
+ * can be mutated.
+ * <p>
+ * When the values are equal, but the keys are unequal, they are ordered randomly.
+ * A memory is kept to satisfy the transitive condition of orders.
+ *
  * @param <T> Type of keys
  * @param <S> Type of values
  */
-public class Pair<T,S extends Comparable<S>> implements Entry<T, S>, Comparable<Pair<T,S>>{
-	
-	private final T cad;
-	private S num;
+public class Pair<T, S extends Comparable<S>> implements Entry<T, S>, Comparable<Pair<T, S>> {
 
-	public Pair(T st,S d) {
-		cad=st;
-		num=d;
-	}
+    private static final Comparator<Pair> valueCompare = (Entry.comparingByValue()::compare);
+    private final T key;
+    private final RandomComparator<T> randomComparator;
+    private S value;
 
-	@Override
-	public T getKey() {
-		return cad;
-	}
+    public Pair(T st, S d,RandomComparator<T> randomComparator) {
+        key = st;
+        value = d;
+        this.randomComparator=randomComparator;
+    }
 
-	@Override
-	public S getValue() {
-		return num;
-	}
+    public RandomComparator<T> getRandomComparator(){
+        return randomComparator;
+    }
 
-	@Override
-	public S setValue(S value) {
-		S dob=this.num;
-		num=value;
-		return dob;
-	}
+    @Override
+    public T getKey() {
+        return key;
+    }
 
-	public String toString(){
-		return getKey()+" -> "+getValue();
-	}
+    @Override
+    public S getValue() {
+        return value;
+    }
 
-	@Override
-	public int compareTo(Pair<T,S> o) {
-		return o.num.compareTo(num);
-	}
+    @Override
+    public S setValue(S value) {
+        S dob = this.value;
+        this.value = value;
+        return dob;
+    }
 
-	@Override
-	public boolean equals(Object obj){
-		return (obj instanceof Pair) && ((Pair)obj).getKey().equals(getKey()) && ((Pair)obj).getValue().equals(getValue());
-	}
+    public String toString() {
+        return getKey() + " -> " + getValue();
+    }
 
-	@Override
-	public int hashCode(){
-		return 10*cad.hashCode()+11*num.hashCode();
-	}
+    @Override
+    public int compareTo(Pair<T, S> o) {
+        if (valueCompare.compare(o,this)==0){
+            return randomComparator.compare(o.key,key);
+        }
+        return valueCompare.compare(o,this);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return (obj instanceof Pair) && ((Pair) obj).getKey().equals(getKey()) && ((Pair) obj).getValue().equals(getValue());
+    }
+
+    @Override
+    public int hashCode() {
+        return 10 * key.hashCode() + 11 * value.hashCode();
+    }
 
 }

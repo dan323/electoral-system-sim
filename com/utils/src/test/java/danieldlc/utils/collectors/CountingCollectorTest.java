@@ -44,4 +44,9 @@ public class CountingCollectorTest {
 
         Assert.assertEquals(solution, map);
     }
+
+    @Test
+    public void finisherIdentity(){
+        Assert.assertEquals((new CountingCollector<String,String>(Function.identity())).finisher(),Function.identity());
+    }
 }

@@ -1,7 +1,7 @@
 package danieldlc.elections.systems.div;
 
+import danieldlc.elections.simulations.PartyListPair;
 import danieldlc.elections.systems.Test;
-import danieldlc.utils.Pair;
 import danieldlc.utils.collectors.CustomCollectors;
 
 import java.util.Map;
@@ -28,8 +28,8 @@ public final class Divisors {
 	public static Map<String,Integer> methodDivisor(Map<String,Integer> votes, int esc, Divisor div){
 		return votes.entrySet().stream()
 				.flatMap(p->IntStream.range(0,esc)
-						.mapToObj(n->(new Pair<>(p.getKey(),p.getValue()/div.apply(n)))))
-				.sorted(Pair::compareTo)
+						.mapToObj(n->(new PartyListPair<>(p.getKey(),p.getValue()/div.apply(n)))))
+				.sorted(PartyListPair::compareTo)
 				.limit(esc)
 				.collect(CustomCollectors.toKeyCountingMap());
 	}

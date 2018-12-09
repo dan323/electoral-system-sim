@@ -1,6 +1,7 @@
 package danieldlc.utils.collectors;
 
 import danieldlc.utils.Pair;
+import danieldlc.utils.comparators.RandomComparator;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,11 +22,12 @@ public class KeyCountingCollectorTest {
     private static final Logger LOG = Logger.getLogger("KEY COUNTING TEST");
     private static List<Pair<String, Double>> list = new ArrayList<>();
     private static Random random = new Random();
+    private static RandomComparator<String> randomComparator=new RandomComparator<>();
 
     @Before
     public void setUp() {
         for (int i = 0; i < random.nextInt(1000000)+100000; i++) {
-            list.add(new Pair<>("var" + random.nextInt(100), random.nextDouble()));
+            list.add(new Pair<>("var" + random.nextInt(100), random.nextDouble(),randomComparator));
         }
         LOG.log(Level.INFO,"The list has size {0}",list.size());
     }

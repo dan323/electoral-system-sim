@@ -47,6 +47,11 @@ public class CustomCollectorsTest {
         test.forEach((key,value)-> assertEntry(key,value,sol2));
     }
 
+    @Test
+    public void toMapFinisherTesting(){
+        Assert.assertEquals((CustomCollectors.toMap(CustomCollectorsTest::keyMapping,(s, m)->s)).finisher(),Function.identity());
+    }
+
     private Map<String, String> getTestingMap() {
         Map<String,String> test=new ConcurrentHashMap<>();
         list.parallelStream()

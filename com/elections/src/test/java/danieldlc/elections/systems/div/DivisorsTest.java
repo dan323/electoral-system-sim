@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -21,7 +22,6 @@ public class DivisorsTest {
     private static final int NUMBER_OF_REPETITIONS = 10;
     private static final Logger LOG = Logger.getLogger("TEST DIVISORS");
     private List<Divisor> methods;
-
 
 
     /**
@@ -103,6 +103,21 @@ public class DivisorsTest {
             }
         }
         return minimum;
+    }
+
+    @Test
+    public void tieTesting() {
+        for (Divisor divisorUsed : methods) {
+            LOG.log(Level.INFO, "Divisor method := 1->{0}", divisorUsed.apply(1));
+            Map<String, Integer> votes = new HashMap<>();
+            votes.put("P0", 10000);
+            votes.put("P1", 10000);
+
+            Map<String, Integer> solution = Divisors.methodDivisor(votes, 3, divisorUsed);
+            Assert.assertTrue(solution.get("P0") <= 2 && solution.get("P0") >= 1);
+            Assert.assertTrue(solution.get("P1") <= 2 && solution.get("P1") >= 1);
+            Assert.assertEquals(3, solution.values().stream().mapToInt(m -> m).sum());
+        }
     }
 
 }

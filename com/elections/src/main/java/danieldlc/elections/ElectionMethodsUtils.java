@@ -38,7 +38,7 @@ public final class ElectionMethodsUtils {
 
     private static void applyMethodRemainder(Method method, Map<String,Double> remainders, Map<String,Integer> quotaResults, int n) {
         try {
-            method.invoke(null,n,quotaResults,remainders);
+            method.invoke(null,n,remainders,quotaResults);
         } catch (IllegalAccessException e) {
             LOG.log(Level.SEVERE, ILLEGAL_ACCESS_TO_METHOD);
         } catch (InvocationTargetException e) {

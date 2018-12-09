@@ -7,7 +7,7 @@
     <groupId>danieldlc.elections</groupId>
     <artifactId>electoral-system-sim</artifactId>
     <packaging>pom</packaging>
-    <version>2.0</version>
+    <version>3.0</version>
     <build>
         <plugins>
             <plugin>
