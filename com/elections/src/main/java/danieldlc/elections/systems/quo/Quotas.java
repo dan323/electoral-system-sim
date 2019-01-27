@@ -29,9 +29,9 @@ public final class Quotas {
      * @param quot:  quota function of the method
      * @return map with seats distributed
      */
-    public static Map<String, Integer> methodQuota(Map<String, Integer> votes, int esc, Quota quot, Remainder mm) {
-        Map<String, Double> aux = new HashMap<>();
-        Map<String, Integer> res = new HashMap<>();
+    public static <T> Map<T, Integer> methodQuota(Map<T, Integer> votes, int esc, Quota<T> quot, Remainder<T> mm) {
+        Map<T, Double> aux = new HashMap<>();
+        Map<T, Integer> res = new HashMap<>();
 
         double d = quot.apply(votes, esc);
         votes.entrySet().stream()
@@ -55,7 +55,7 @@ public final class Quotas {
     public static void remaindersLargestRemainder(int esc, Map<String, Double> dob, Map<String, Integer> mint) {
 
         dob.entrySet().stream()
-                .map(e -> new PartyListPair<>(e.getKey(), e.getKey()))
+                .map(e -> new PartyListPair<>(e.getKey(), e.getValue()))
                 .sorted()
                 .limit(esc)
                 .forEach(e -> mint.put(e.getKey(), mint.get(e.getKey()) + 1));

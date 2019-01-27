@@ -17,8 +17,8 @@ public class QuotasTest {
     private static final Random random = new Random();
     private static final int NUMBER_OF_REPETITIONS = 10;
     private static final Logger LOG = Logger.getLogger("TEST DIVISORS");
-    private List<Quota> quotas;
-    private List<Remainder> remainders;
+    private List<Quota<String>> quotas;
+    private List<Remainder<String>> remainders;
 
     @Before
     public void init() {
@@ -26,7 +26,7 @@ public class QuotasTest {
         remainders = ElectionMethodsUtils.getRemainderMethods(List.of(Quotas.class));
     }
 
-    private void oneRandomTest(Quota quotaUsed, Remainder remainderUsed) {
+    private void oneRandomTest(Quota<String> quotaUsed, Remainder<String> remainderUsed) {
         int numOfSeats = random.nextInt(90) + 10;
         PartyListVotingSimulation plvsim = new PartyListVotingSimulation(2, numOfSeats / 5 - 2);
 
@@ -40,7 +40,7 @@ public class QuotasTest {
         checkAssertions(votes, solution, quotaUsed, remainderUsed, numOfSeats);
     }
 
-    private void checkAssertions(Map<String, Integer> votes, Map<String, Integer> solution, Quota quotaUsed, Remainder remainderUsed, int numOfSeats) {
+    private void checkAssertions(Map<String, Integer> votes, Map<String, Integer> solution, Quota<String> quotaUsed, Remainder remainderUsed, int numOfSeats) {
         Assert.assertEquals(numOfSeats, solution.values().stream().mapToInt(z -> z).sum());
         double quota = quotaUsed.apply(votes, numOfSeats);
         votes.forEach((st, vote) -> Assert.assertTrue(Math.floor(vote / quota) <= solution.get(st)));
@@ -48,8 +48,8 @@ public class QuotasTest {
 
     @Test
     public void methodQuotaAllTest() {
-        for (Quota quotaUsed : quotas) {
-            for (Remainder remainderUsed : remainders) {
+        for (Quota<String> quotaUsed : quotas) {
+            for (Remainder<String> remainderUsed : remainders) {
                 for (int j = 0; j < NUMBER_OF_REPETITIONS; j++) {
                     oneRandomTest(quotaUsed, remainderUsed);
                 }

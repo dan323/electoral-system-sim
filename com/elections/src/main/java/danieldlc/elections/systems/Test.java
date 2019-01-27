@@ -6,14 +6,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Use to mark all methods to be used in the unit testing
+ * Used to mark all methods to be used in the unit testing
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Test {
 
     enum Type{
-        DIVISOR,QUOTA,REMAINDER
+        DIVISOR,QUOTA,REMAINDER,STV
     }
     boolean toBeTested() default true;
 

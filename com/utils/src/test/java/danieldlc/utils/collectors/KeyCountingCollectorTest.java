@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 public class KeyCountingCollectorTest {
 
     private static final Logger LOG = Logger.getLogger("KEY COUNTING TEST");
-    private static List<Pair<String, Double>> list = new ArrayList<>();
-    private static Random random = new Random();
-    private static RandomComparator<String> randomComparator=new RandomComparator<>();
+    private static final List<Pair<String, Double>> list = new ArrayList<>();
+    private static final Random random = new Random();
+    private static final RandomComparator<String> randomComparator=new RandomComparator<>();
 
     @Before
     public void setUp() {

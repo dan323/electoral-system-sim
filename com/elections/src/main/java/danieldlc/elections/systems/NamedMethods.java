@@ -13,7 +13,7 @@ public final class NamedMethods {
     /**
      * @param votes: represents the votes given to each party involved.
      * @param esc: number of pieces to divide among the parties.
-     * @return
+     * @return Webster solution
      */
     public static Map<String,Integer> methodWebster(Map<String,Integer> votes, int esc) {
         return Divisors.methodDivisor(votes,esc,Divisors::divisorsSaint);
@@ -22,7 +22,7 @@ public final class NamedMethods {
     /**
      * @param votes: represents the votes given to each party involved.
      * @param esc: number of pieces to divide among the parties.
-     * @return
+     * @return Jefferson solution
      */
     public static Map<String,Integer> methodJefferson(Map<String,Integer> votes, int esc) {
         return Divisors.methodDivisor(votes,esc,Divisors::divisorsDHont);
@@ -31,8 +31,7 @@ public final class NamedMethods {
     /**
      * @param votes: represents the votes given to each party involved.
      * @param esc: number of pieces to divide among the parties.
-     * @return
-     * @throws Exception
+     * @return Danish solution
      */
     public static Map<String,Integer> methodDanes(Map<String,Integer> votes, int esc) {
         return Divisors.methodDivisor(votes,esc,Divisors::divisorsDin);
@@ -41,7 +40,7 @@ public final class NamedMethods {
     /**
      * @param votes: represents the votes given to each party involved.
      * @param esc: number of pieces to divide among the parties.
-     * @return
+     * @return Hamilton solution
      */
     public static Map<String,Integer> methodHamilton(Map<String,Integer> votes,int esc) {
 
@@ -52,7 +51,7 @@ public final class NamedMethods {
     /**
      * @param votes: represents the votes given to each party involved.
      * @param esc: number of pieces to divide among the parties.
-     * @return
+     * @return Relative hamilton solution
      */
     public static Map<String,Integer> methodHamiltonRel(Map<String,Integer> votes, int esc) {
 

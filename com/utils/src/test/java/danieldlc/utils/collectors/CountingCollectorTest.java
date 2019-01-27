@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 public class CountingCollectorTest {
 
     private static final Logger LOG = Logger.getLogger("COUNTING TEST");
-    private static List<String> list = new ArrayList<>();
-    private static Random random = new Random();
+    private static final List<String> list = new ArrayList<>();
+    private static final Random random = new Random();
 
 
     @Before

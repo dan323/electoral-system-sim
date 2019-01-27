@@ -3,7 +3,7 @@ package danieldlc.elections.systems.quo;
 import java.util.Map;
 
 @FunctionalInterface
-public interface Remainder {
+public interface Remainder<T> {
 
-	void apply(int esc,Map<String, Double> aux,Map<String, Integer> res);
+	void apply(int esc,Map<T, Double> aux,Map<T, Integer> res);
 }

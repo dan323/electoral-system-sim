@@ -15,8 +15,8 @@ import java.util.Random;
  */
 public class RandomComparator<T> implements Comparator<T> {
 
-    private static Random random = new Random();
-    private List<T> compared;
+    private static final Random random = new Random();
+    private final List<T> compared;
 
     public RandomComparator() {
         compared = new ArrayList<>();

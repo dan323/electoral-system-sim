@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public class RandomComparatorTest {
 
     private final static Logger LOG = Logger.getLogger("Random comparator TEST");
-    private static RandomComparator<String> randomComparator = new RandomComparator<>();
+    private final static RandomComparator<String> randomComparator = new RandomComparator<>();
 
     @Test
     public void testRepeatRandom() {

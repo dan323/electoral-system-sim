@@ -12,7 +12,7 @@ public class MapKeyValueCheckingCollector<K,S,T> implements Collector<K, Map<S,T
     private final BiFunction<K,Map<S,T>,S> keyFunc;
     private final BiFunction<K,Map<S,T>,T> valueFunc;
 
-    private Map<Map.Entry<S,T>,K> remember=new ConcurrentHashMap<>();
+    private final Map<Map.Entry<S,T>,K> remember=new ConcurrentHashMap<>();
 
     public MapKeyValueCheckingCollector(BiFunction<K,Map<S,T>,S> keyFunc,
                                         BiFunction<K,Map<S,T>,T> valueFunc){

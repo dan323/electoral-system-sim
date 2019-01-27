@@ -28,15 +28,15 @@ public final class ElectionMethodsUtils {
         return getMethods(ElectionMethodsUtils::getDivisor,clazzes, Test.Type.DIVISOR);
     }
 
-    public static List<Quota> getQuotaMethods(List<Class> clazzes){
+    public static <T> List<Quota<T>> getQuotaMethods(List<Class> clazzes){
         return getMethods(ElectionMethodsUtils::getQuota,clazzes, Test.Type.QUOTA);
     }
 
-    public static List<Remainder> getRemainderMethods(List<Class> clazzes){
+    public static <T> List<Remainder<T>> getRemainderMethods(List<Class> clazzes){
         return getMethods(ElectionMethodsUtils::getRemainder,clazzes, Test.Type.REMAINDER);
     }
 
-    private static void applyMethodRemainder(Method method, Map<String,Double> remainders, Map<String,Integer> quotaResults, int n) {
+    private static <T> void applyMethodRemainder(Method method, Map<T,Double> remainders, Map<T,Integer> quotaResults, int n) {
         try {
             method.invoke(null,n,remainders,quotaResults);
         } catch (IllegalAccessException e) {
@@ -46,7 +46,7 @@ public final class ElectionMethodsUtils {
         }
     }
 
-    private static Remainder getRemainder(Method method) {
+    private static <T> Remainder<T> getRemainder(Method method) {
         return (n, rem, quotas)->applyMethodRemainder(method,rem,quotas,n);
     }
 
@@ -80,7 +80,7 @@ public final class ElectionMethodsUtils {
         return n -> applyMethodDivisor(method, n);
     }
 
-    private static double applyMethodQuota(Method method, Map<String,Integer> votes, int n) {
+    private static <T> double applyMethodQuota(Method method, Map<T,Integer> votes, int n) {
         try {
             return (double) method.invoke(null,votes, n);
         } catch (IllegalAccessException e) {
@@ -91,8 +91,8 @@ public final class ElectionMethodsUtils {
         return 0;
     }
 
-    private static Quota getQuota(Method method) {
-        return (votes,n) -> applyMethodQuota(method,votes, n);
+    private static <T> Quota<T> getQuota(Method method) {
+        return (votes, n) -> applyMethodQuota(method,votes, n);
     }
 
 }

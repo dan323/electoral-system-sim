@@ -22,7 +22,7 @@ public class PartyListVotingSimulation implements VotingSimulation {
     }
 
     public void setNumOfParties(int minParties,int maxParties){
-        this.numOfParties=(maxParties-minParties>0?RANDOM.nextInt(maxParties-minParties):0)+minParties;
+        this.numOfParties=RANDOM.nextInt(maxParties-minParties+1)+minParties;
     }
 
     public void setNumOfParties(int numParties){
