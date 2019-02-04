@@ -4,7 +4,7 @@
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>danieldlc.elections</groupId>
+    <groupId>jmcd.elections</groupId>
     <artifactId>electoral-system-sim</artifactId>
     <packaging>pom</packaging>
     <version>3.0</version>
