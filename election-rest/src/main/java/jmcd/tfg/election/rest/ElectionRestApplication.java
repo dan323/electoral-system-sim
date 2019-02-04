@@ -1,4 +1,4 @@
-package com.juanma.tfg.election.rest;
+package jmcd.tfg.election.rest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

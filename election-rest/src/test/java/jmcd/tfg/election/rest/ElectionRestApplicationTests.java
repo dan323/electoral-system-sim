@@ -1,4 +1,4 @@
-package com.juanma.tfg.election.rest;
+package jmcd.tfg.election.rest;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

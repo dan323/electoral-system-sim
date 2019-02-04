@@ -1,4 +1,4 @@
-package com.juanma.tfg.persistencia;
+package jmcd.tfg.persistencia;
 
 import javax.persistence.*;
 import java.util.Map;
