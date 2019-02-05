@@ -1,0 +1,65 @@
+<!DOCTYPE dataset SYSTEM "dataset.dtd">
+<dataset>
+    <table name="usuario">
+        <column>nombre</column>
+        <column>clave</column>
+        <row>
+            <value>Pepe</value>
+            <value>cucu</value>
+        </row>
+        <row>
+            <value>Oscar</value>
+            <value>tutu</value>
+        </row>
+    </table>
+    <table name="votos">
+        <column>id</column>
+        <column>nombre</column>
+        <column>usuario_nombre</column>
+        <row>
+            <value>1</value>
+            <value>Elecciones 2014</value>
+            <value>Pepe</value>
+        </row>
+        <row>
+            <value>2</value>
+            <value>Elecciones 2018</value>
+            <value>Oscar</value>
+        </row>
+    </table>
+    <table name='batch_votos'>
+        <column>id</column>
+        <column>partido</column>
+        <column>votos</column>
+        <row>
+            <value>1</value>
+            <value>PP</value>
+            <value>2000</value>
+        </row>
+        <row>
+            <value>1</value>
+            <value>PSOE</value>
+            <value>1000</value>
+        </row>
+        <row>
+            <value>1</value>
+            <value>Podemos</value>
+            <value>5</value>
+        </row>
+        <row>
+            <value>2</value>
+            <value>PP</value>
+            <value>200</value>
+        </row>
+        <row>
+            <value>2</value>
+            <value>PSOE</value>
+            <value>500</value>
+        </row>
+        <row>
+            <value>2</value>
+            <value>PACMA</value>
+            <value>1</value>
+        </row>
+    </table>
+</dataset>

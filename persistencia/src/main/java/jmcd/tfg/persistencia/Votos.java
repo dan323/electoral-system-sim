@@ -6,13 +6,14 @@ import java.util.Map;
 @Entity
 public class Votos {
     @ElementCollection
-    @JoinTable(name = "BATCH_VOTOS",
+    @CollectionTable(name = "BATCH_VOTOS",
             joinColumns = @JoinColumn(name = "ID"))
-    @MapKey(name = "PARTIDO")
+    @MapKeyColumn(name = "PARTIDO")
     @Column(name = "VOTOS")
     private Map<String, Integer> votos;
     private String nombre;
-    private String usuario;
+    @ManyToOne
+    private Usuario usuario;
     @Id
     private String id;
 
@@ -40,11 +41,11 @@ public class Votos {
         this.nombre = nombre;
     }
 
-    public String getUsuario() {
+    public Usuario getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(String usuario) {
+    public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 }
