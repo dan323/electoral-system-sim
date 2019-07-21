@@ -1,4 +1,4 @@
-package jmcd.elections.systems.div;
+package dan323.elections.systems.div;
 
 import java.util.function.Function;
 

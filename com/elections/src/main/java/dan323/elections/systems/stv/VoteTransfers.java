@@ -1,7 +1,7 @@
-package jmcd.elections.systems.stv;
+package dan323.elections.systems.stv;
 
-import jmcd.elections.systems.Test;
-import jmcd.elections.systems.quo.Quota;
+import dan323.elections.systems.Test;
+import dan323.elections.systems.quo.Quota;
 
 import java.util.*;
 import java.util.stream.Collectors;

@@ -18,7 +18,6 @@ import java.util.Map.Entry;
  */
 public class Pair<T, S extends Comparable<S>> implements Entry<T, S>, Comparable<Pair<T, S>> {
 
-    private static final Comparator<Pair> valueCompare = (Entry.comparingByValue()::compare);
     private final T key;
     private final RandomComparator<T> randomComparator;
     private S value;
@@ -56,10 +55,10 @@ public class Pair<T, S extends Comparable<S>> implements Entry<T, S>, Comparable
 
     @Override
     public int compareTo(Pair<T, S> o) {
-        if (valueCompare.compare(o,this)==0){
+        if (Entry.<T,S>comparingByValue().compare(o,this)==0){
             return randomComparator.compare(o.key,key);
         }
-        return valueCompare.compare(o,this);
+        return Entry.<T,S>comparingByValue().compare(o,this);
     }
 
     @Override

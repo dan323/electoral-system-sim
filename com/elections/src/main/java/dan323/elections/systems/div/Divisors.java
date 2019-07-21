@@ -1,7 +1,7 @@
-package jmcd.elections.systems.div;
+package dan323.elections.systems.div;
 
-import jmcd.elections.simulations.PartyListPair;
-import jmcd.elections.systems.Test;
+import dan323.elections.simulations.PartyListPair;
+import dan323.elections.systems.Test;
 import jmcd.utils.collectors.CustomCollectors;
 
 import java.util.Map;

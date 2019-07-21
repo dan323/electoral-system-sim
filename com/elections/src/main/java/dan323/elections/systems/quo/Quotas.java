@@ -1,14 +1,14 @@
-package jmcd.elections.systems.quo;
+package dan323.elections.systems.quo;
 
-import jmcd.elections.simulations.PartyListPair;
-import jmcd.elections.systems.Test;
+import dan323.elections.simulations.PartyListPair;
+import dan323.elections.systems.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static jmcd.elections.systems.Test.Type.QUOTA;
-import static jmcd.elections.systems.Test.Type.REMAINDER;
+import static dan323.elections.systems.Test.Type.QUOTA;
+import static dan323.elections.systems.Test.Type.REMAINDER;
 
 /**
  * This class is a library of quota methods of apportionment. There is a list of remainder apportionment, which start their names with 'remainders'

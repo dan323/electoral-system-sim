@@ -1,4 +1,4 @@
-package jmcd.elections.simulations;
+package dan323.elections.simulations;
 
 import jmcd.utils.Pair;
 import jmcd.utils.comparators.RandomComparator;

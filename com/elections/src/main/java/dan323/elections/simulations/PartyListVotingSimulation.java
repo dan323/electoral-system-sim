@@ -1,4 +1,4 @@
-package jmcd.elections.simulations;
+package dan323.elections.simulations;
 
 import java.util.Map;
 import java.util.Random;

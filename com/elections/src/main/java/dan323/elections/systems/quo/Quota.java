@@ -1,4 +1,4 @@
-package jmcd.elections.systems.quo;
+package dan323.elections.systems.quo;
 
 import java.util.Map;
 import java.util.function.BiFunction;

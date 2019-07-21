@@ -1,7 +1,7 @@
-package jmcd.elections.systems;
+package dan323.elections.systems;
 
-import jmcd.elections.systems.div.Divisors;
-import jmcd.elections.systems.quo.Quotas;
+import dan323.elections.systems.div.Divisors;
+import dan323.elections.systems.quo.Quotas;
 
 import java.util.Map;
 

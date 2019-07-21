@@ -1,9 +1,9 @@
-package jmcd.elections;
+package dan323.elections;
 
-import jmcd.elections.systems.Test;
-import jmcd.elections.systems.div.Divisor;
-import jmcd.elections.systems.quo.Quota;
-import jmcd.elections.systems.quo.Remainder;
+import dan323.elections.systems.Test;
+import dan323.elections.systems.div.Divisor;
+import dan323.elections.systems.quo.Quota;
+import dan323.elections.systems.quo.Remainder;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

@@ -1,4 +1,4 @@
-package jmcd.elections.systems;
+package dan323.elections.systems;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

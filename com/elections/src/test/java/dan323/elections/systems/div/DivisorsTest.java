@@ -1,7 +1,7 @@
-package jmcd.elections.systems.div;
+package dan323.elections.systems.div;
 
-import jmcd.elections.ElectionMethodsUtils;
-import jmcd.elections.simulations.PartyListVotingSimulation;
+import dan323.elections.ElectionMethodsUtils;
+import dan323.elections.simulations.PartyListVotingSimulation;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
