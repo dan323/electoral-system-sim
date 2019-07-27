@@ -6,6 +6,6 @@ import java.util.Map;
 @FunctionalInterface
 public interface VoteTransfer {
 
-    Map<String, Double> transferenceOfVotes(String candidate, Map<List<String>,Integer> votes, int seats, List<String> validCandidates);
+    Map<String, Double> transferenceOfVotes(String candidate, Map<List<String>,Long> votes, int seats, List<String> validCandidates);
 
 }

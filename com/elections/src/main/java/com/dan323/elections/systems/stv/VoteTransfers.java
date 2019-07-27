@@ -1,6 +1,6 @@
 package com.dan323.elections.systems.stv;
 
-import com.dan323.elections.systems.Test;
+import com.dan323.elections.systems.Testing;
 import com.dan323.elections.systems.quo.Quota;
 
 import java.util.*;
@@ -13,8 +13,8 @@ public final class VoteTransfers {
     private VoteTransfers() {
     }
 
-    @Test(type = Test.Type.STV)
-    public static Map<String, Double> trasnferePure(String candidate, Map<List<String>, Integer> votes, Quota<List<String>> quota, int seats, List<String> validCandidates) {
+    @Testing(type = Testing.Type.STV)
+    public static Map<String, Double> trasnferePure(String candidate, Map<List<String>, Long> votes, Quota<List<String>> quota, int seats, List<String> validCandidates) {
 
         Map<String, Double> solution = initMap(validCandidates);
 
@@ -23,12 +23,12 @@ public final class VoteTransfers {
 
         double quotaDouble=quota.apply(votes,seats);
 
-        int total = votes.entrySet().stream()
+        long total = votes.entrySet().stream()
                 .filter(e -> e.getKey().stream()
                         .filter(validPlusCurrent::contains)
                         .findFirst()
                         .orElse(candidate + "NOT").equals(candidate))
-                .mapToInt(Map.Entry::getValue)
+                .mapToLong(Map.Entry::getValue)
                 .sum();
 
         votes.entrySet().stream()
@@ -46,20 +46,20 @@ public final class VoteTransfers {
                 .collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue));
     }
 
-    @Test(type = Test.Type.STV)
-    public static Map<String, Double> transfereRandom(String candidate, Map<List<String>, Integer> votes, Quota<List<String>> quota, int seats, List<String> validCandidates) {
+    @Testing(type = Testing.Type.STV)
+    public static Map<String, Double> transfereRandom(String candidate, Map<List<String>, Long> votes, Quota<List<String>> quota, int seats, List<String> validCandidates) {
 
         Map<String, Double> auxiliar = initMap(validCandidates);
 
         List<String> validPlusCurrent = new ArrayList<>(validCandidates);
         validPlusCurrent.add(candidate);
 
-        int total = votes.entrySet().stream()
+        long total = votes.entrySet().stream()
                 .filter(e -> e.getKey().stream()
                         .filter(validPlusCurrent::contains)
                         .findFirst()
                         .orElse(candidate + "NOT").equals(candidate))
-                .mapToInt(Map.Entry::getValue)
+                .mapToLong(Map.Entry::getValue)
                 .sum();
 
         int excess = (int)(total - quota.apply(votes,seats));
@@ -91,7 +91,7 @@ public final class VoteTransfers {
         return solution;
     }
 
-    private static double percentage(int value, int quota, double total) {
+    private static double percentage(long value, int quota, double total) {
         return (value / total) * (total - quota);
     }
 

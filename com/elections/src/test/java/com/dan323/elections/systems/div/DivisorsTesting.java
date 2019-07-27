@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 /**
  * This test is for divisor methods
  */
-public class DivisorsTest {
+public class DivisorsTesting {
 
     private static final Random random = new Random();
     private static final int NUMBER_OF_REPETITIONS = 10;
@@ -54,7 +54,7 @@ public class DivisorsTest {
         int numOfSeats = random.nextInt(90) + 10;
         PartyListVotingSimulation votSim = new PartyListVotingSimulation(2, numOfSeats / 5);
 
-        Map<String, Integer> votes = votSim.getVotes();
+        Map<String, Long> votes = votSim.getVotes();
         Map<String, Integer> solution = Divisors.methodDivisor(votes, numOfSeats, divisorUsed);
 
         LOG.log(Level.INFO, "Number of seats := {0}", numOfSeats);
@@ -64,7 +64,7 @@ public class DivisorsTest {
         checkAssertions(divisorUsed, votes, solution);
     }
 
-    private void checkAssertions(Divisor divisorUsed, Map<String, Integer> votes, Map<String, Integer> solution) {
+    private void checkAssertions(Divisor divisorUsed, Map<String, Long> votes, Map<String, Integer> solution) {
         double modifiedDivisor = (nextDivisor(votes, solution, divisorUsed) + previousDivisor(votes, solution, divisorUsed)) / 2;
         LOG.log(Level.INFO, "Modified divisor := {0}", modifiedDivisor);
         for (Map.Entry<String, Integer> party : solution.entrySet()) {
@@ -77,9 +77,9 @@ public class DivisorsTest {
         }
     }
 
-    private double nextDivisor(Map<String, Integer> votes, Map<String, Integer> solution, Divisor divisorUsed) {
+    private double nextDivisor(Map<String, Long> votes, Map<String, Integer> solution, Divisor divisorUsed) {
         double maximum = 0;
-        for (Map.Entry<String, Integer> party : votes.entrySet()) {
+        for (Map.Entry<String, Long> party : votes.entrySet()) {
             double step = party.getValue() / divisorUsed.apply(solution.getOrDefault(party.getKey(), 0));
 
             if (maximum < step) {
@@ -89,9 +89,9 @@ public class DivisorsTest {
         return maximum;
     }
 
-    private double previousDivisor(Map<String, Integer> votes, Map<String, Integer> solution, Divisor divisorUsed) {
+    private double previousDivisor(Map<String, Long> votes, Map<String, Integer> solution, Divisor divisorUsed) {
         double minimum = 0;
-        for (Map.Entry<String, Integer> party : votes.entrySet()) {
+        for (Map.Entry<String, Long> party : votes.entrySet()) {
             if (solution.containsKey(party.getKey())) {
                 double step = party.getValue() / divisorUsed.apply(solution.get(party.getKey()) - 1);
 
@@ -110,9 +110,9 @@ public class DivisorsTest {
     public void tieTesting() {
         for (Divisor divisorUsed : methods) {
             LOG.log(Level.INFO, "Divisor method := 1->{0}", divisorUsed.apply(1));
-            Map<String, Integer> votes = new HashMap<>();
-            votes.put("P0", 10000);
-            votes.put("P1", 10000);
+            Map<String, Long> votes = new HashMap<>();
+            votes.put("P0", 10000L);
+            votes.put("P1", 10000L);
 
             Map<String, Integer> solution = Divisors.methodDivisor(votes, 3, divisorUsed);
             Assertions.assertTrue(solution.get("P0") <= 2 && solution.get("P0") >= 1);

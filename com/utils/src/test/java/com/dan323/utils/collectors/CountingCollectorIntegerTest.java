@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-public class CountingCollectorTest {
+public class CountingCollectorIntegerTest {
 
     private static final Logger LOG = Logger.getLogger("COUNTING TEST");
     private static final List<String> list = new ArrayList<>();
@@ -31,7 +31,7 @@ public class CountingCollectorTest {
 
     @Test
     public void countingCollectorTesting() {
-        Map<String, Integer> solution = list.stream().collect(new CountingCollector<>(Function.identity()));
+        Map<String, Integer> solution = list.stream().collect(new CountingCollectorInteger<>(Function.identity()));
 
         Map<String, Integer> map = list.stream()
                 .collect(Collectors.groupingBy(Function.identity()))
@@ -40,13 +40,13 @@ public class CountingCollectorTest {
 
         Assertions.assertEquals(solution, map);
 
-        solution = list.parallelStream().collect(new CountingCollector<>(Function.identity()));
+        solution = list.parallelStream().collect(new CountingCollectorInteger<>(Function.identity()));
 
         Assertions.assertEquals(solution, map);
     }
 
     @Test
     public void finisherIdentity(){
-        Assertions.assertEquals((new CountingCollector<String,String>(Function.identity())).finisher(),Function.identity());
+        Assertions.assertEquals((new CountingCollectorInteger<String,String>(Function.identity())).finisher(),Function.identity());
     }
 }

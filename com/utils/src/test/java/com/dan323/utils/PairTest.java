@@ -39,6 +39,15 @@ public class PairTest {
         Assertions.assertNotEquals("Testing", new Pair<>("A", "B", pair.getRandomComparator()));
         Assertions.assertNotEquals(pair, new Pair<>(pair.getKey(), "B", pair.getRandomComparator()));
         Assertions.assertNotEquals(pair, new Pair<>("A", pair.getValue(), pair.getRandomComparator()));
+        class MyPair {
+            public String getKey() {
+                return pair.getKey();
+            }
+            public String getValue() {
+                return pair.getValue();
+            }
+        }
+        Assertions.assertNotEquals(pair, new MyPair());
     }
 
     @Test

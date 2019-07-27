@@ -29,15 +29,27 @@ public final class CustomCollectors {
         return new MapKeyValueCheckingCollector<>(keyFunc, valueFunc);
     }
 
-    public static <S, R> Collector<S, Map<R, Integer>, Map<R, Integer>> toCountingMap(Function<S, R> function) {
-        return new CountingCollector<>(function);
+    public static <S, R> Collector<S, Map<R, Integer>, Map<R, Integer>> toCountingMapInt(Function<S, R> function) {
+        return new CountingCollectorInteger<>(function);
     }
 
-    public static <R, S> Collector<Entry<R, S>, Map<R, Integer>, Map<R, Integer>> toKeyCountingMap() {
-        return toCountingMap(Entry::getKey);
+    public static <S, R> Collector<S, Map<R, Long>, Map<R, Long>> toCountingMapLong(Function<S, R> function) {
+        return new CountingCollectorLong<>(function);
     }
 
-    public static <R, S> Collector<Entry<R, S>, Map<S, Integer>, Map<S, Integer>> toValueCountingMap() {
-        return toCountingMap(Entry::getValue);
+    public static <R, S> Collector<Entry<R, S>, Map<R, Integer>, Map<R, Integer>> toKeyCountingMapInt() {
+        return toCountingMapInt(Entry::getKey);
+    }
+
+    public static <R, S> Collector<Entry<R, S>, Map<R, Long>, Map<R, Long>> toKeyCountingMapLong() {
+        return toCountingMapLong(Entry::getKey);
+    }
+
+    public static <R, S> Collector<Entry<R, S>, Map<S, Integer>, Map<S, Integer>> toValueCountingMapInt() {
+        return toCountingMapInt(Entry::getValue);
+    }
+
+    public static <R, S> Collector<Entry<R, S>, Map<S, Long>, Map<S, Long>> toValueCountingMapLong() {
+        return toCountingMapLong(Entry::getValue);
     }
 }

@@ -12,7 +12,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class QuotasTest {
+public class QuotasTesting {
 
     private static final Random random = new Random();
     private static final int NUMBER_OF_REPETITIONS = 10;
@@ -30,7 +30,7 @@ public class QuotasTest {
         int numOfSeats = random.nextInt(90) + 10;
         PartyListVotingSimulation plvsim = new PartyListVotingSimulation(2, numOfSeats / 5);
 
-        Map<String, Integer> votes = plvsim.getVotes();
+        Map<String, Long> votes = plvsim.getVotes();
         Map<String, Integer> solution = Quotas.methodQuota(votes, numOfSeats, quotaUsed, remainderUsed);
 
         LOG.log(Level.INFO, "Number of seats := {0}", numOfSeats);
@@ -40,7 +40,7 @@ public class QuotasTest {
         checkAssertions(votes, solution, quotaUsed, remainderUsed, numOfSeats);
     }
 
-    private void checkAssertions(Map<String, Integer> votes, Map<String, Integer> solution, Quota<String> quotaUsed, Remainder remainderUsed, int numOfSeats) {
+    private void checkAssertions(Map<String, Long> votes, Map<String, Integer> solution, Quota<String> quotaUsed, Remainder remainderUsed, int numOfSeats) {
         Assertions.assertEquals(numOfSeats, solution.values().stream().mapToInt(z -> z).sum());
         double quota = quotaUsed.apply(votes, numOfSeats);
         votes.forEach((st, vote) -> Assertions.assertTrue(Math.floor(vote / quota) <= solution.get(st)));

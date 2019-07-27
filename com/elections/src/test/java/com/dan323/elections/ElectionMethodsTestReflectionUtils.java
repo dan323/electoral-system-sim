@@ -1,6 +1,6 @@
 package com.dan323.elections;
 
-import com.dan323.elections.systems.Test;
+import com.dan323.elections.systems.Testing;
 import com.dan323.elections.systems.div.Divisor;
 import com.dan323.elections.systems.quo.Quota;
 import com.dan323.elections.systems.quo.Remainder;
@@ -25,15 +25,15 @@ public final class ElectionMethodsTestReflectionUtils {
     }
 
     public static List<Divisor> getDivisorMethods(List<Class> clazzes) {
-        return getMethods(ElectionMethodsTestReflectionUtils::getDivisor, clazzes, Test.Type.DIVISOR);
+        return getMethods(ElectionMethodsTestReflectionUtils::getDivisor, clazzes, Testing.Type.DIVISOR);
     }
 
     public static <T> List<Quota<T>> getQuotaMethods(List<Class> clazzes) {
-        return getMethods(ElectionMethodsTestReflectionUtils::getQuota, clazzes, Test.Type.QUOTA);
+        return getMethods(ElectionMethodsTestReflectionUtils::getQuota, clazzes, Testing.Type.QUOTA);
     }
 
     public static <T> List<Remainder<T>> getRemainderMethods(List<Class> clazzes) {
-        return getMethods(ElectionMethodsTestReflectionUtils::getRemainder, clazzes, Test.Type.REMAINDER);
+        return getMethods(ElectionMethodsTestReflectionUtils::getRemainder, clazzes, Testing.Type.REMAINDER);
     }
 
     private static <T> void applyMethodRemainder(Method method, Map<T, Double> remainders, Map<T, Integer> quotaResults, int n) {
@@ -50,16 +50,16 @@ public final class ElectionMethodsTestReflectionUtils {
         return (n, rem, quotas) -> applyMethodRemainder(method, rem, quotas, n);
     }
 
-    private static Stream<Method> getMethods(List<Class> clazzes, Test.Type remainder) {
+    private static Stream<Method> getMethods(List<Class> clazzes, Testing.Type remainder) {
         return clazzes.stream()
                 .map(Class::getDeclaredMethods)
                 .flatMap(Stream::of)
-                .filter(m -> m.isAnnotationPresent(Test.class))
-                .filter(m -> m.getAnnotation(Test.class).toBeTested())
-                .filter(m -> m.getAnnotation(Test.class).type().equals(remainder));
+                .filter(m -> m.isAnnotationPresent(Testing.class))
+                .filter(m -> m.getAnnotation(Testing.class).toBeTested())
+                .filter(m -> m.getAnnotation(Testing.class).type().equals(remainder));
     }
 
-    private static <T> List<T> getMethods(Function<Method, T> function, List<Class> clazzes, Test.Type remainder) {
+    private static <T> List<T> getMethods(Function<Method, T> function, List<Class> clazzes, Testing.Type remainder) {
         return getMethods(clazzes, remainder)
                 .map(function)
                 .collect(Collectors.toList());
@@ -80,7 +80,7 @@ public final class ElectionMethodsTestReflectionUtils {
         return n -> applyMethodDivisor(method, n);
     }
 
-    private static <T> double applyMethodQuota(Method method, Map<T, Integer> votes, int n) {
+    private static <T> double applyMethodQuota(Method method, Map<T, Long> votes, int n) {
         try {
             return (double) method.invoke(null, votes, n);
         } catch (IllegalAccessException e) {

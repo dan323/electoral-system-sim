@@ -82,8 +82,19 @@ public class CustomCollectorsTest {
         Map<String, String> test = getTestingMap();
 
         Map<String, Integer> countingMap = test.entrySet().stream()
-                .collect(CustomCollectors.toValueCountingMap());
+                .collect(CustomCollectors.toValueCountingMapInt());
 
         Assertions.assertEquals(countingMap.values().stream().mapToInt(z -> z).sum(), list.size());
+    }
+
+
+    @Test
+    public void valueCountingMapTestingLong() {
+        Map<String, String> test = getTestingMap();
+
+        Map<String, Long> countingMap = test.entrySet().stream()
+                .collect(CustomCollectors.toValueCountingMapLong());
+
+        Assertions.assertEquals(countingMap.values().stream().mapToLong(z -> z).sum(), list.size());
     }
 }

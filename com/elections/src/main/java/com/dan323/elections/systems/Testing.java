@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Test {
+public @interface Testing {
 
     enum Type{
         DIVISOR,QUOTA,REMAINDER,STV

@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 /**
  * Test of the key counting collector.
  */
-public class KeyCountingCollectorTest {
+public class KeyCountingCollectorIntegerTest {
 
     private static final Logger LOG = Logger.getLogger("KEY COUNTING TEST");
     private static final List<Pair<String, Double>> list = new ArrayList<>();
@@ -37,7 +37,7 @@ public class KeyCountingCollectorTest {
      */
     @Test
     public void sequentialKeyCountingCollectorTesting() {
-        Map<String, Integer> solution = list.stream().collect(CustomCollectors.toKeyCountingMap());
+        Map<String, Integer> solution = list.stream().collect(CustomCollectors.toKeyCountingMapInt());
 
         Map<String, Integer> map = list.stream()
                 .collect(Collectors.groupingBy(Pair::getKey))
@@ -53,7 +53,7 @@ public class KeyCountingCollectorTest {
      */
     @Test
     public void parallelKeyCountingCollectorTesting() {
-        Map<String, Integer> solution = list.parallelStream().collect(CustomCollectors.toKeyCountingMap());
+        Map<String, Integer> solution = list.parallelStream().collect(CustomCollectors.toKeyCountingMapInt());
 
         Map<String, Integer> map = list.stream()
                 .collect(Collectors.groupingBy(Pair::getKey))
