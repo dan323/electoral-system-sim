@@ -1,6 +1,6 @@
 module utils {
-    exports jmcd.utils;
-    exports jmcd.utils.collectors;
-    exports jmcd.utils.comparators;
+    exports com.dan323.utils;
+    exports com.dan323.utils.collectors;
+    exports com.dan323.utils.comparators;
     requires transitive java.logging;
 }
