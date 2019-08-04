@@ -2,7 +2,7 @@ package com.dan323.elections.systems.div;
 
 import com.dan323.elections.simulations.PartyListPair;
 import com.dan323.elections.systems.Testing;
-import com.dan323.utils.collectors.CustomCollectors;
+import com.dan323.utils.collectors.main.CustomCollectors;
 
 import java.util.Map;
 import java.util.stream.IntStream;
@@ -11,17 +11,28 @@ import java.util.stream.IntStream;
  * This class is a library of divisor methods of apportionment. There is a list of divisor functions, which start their names with 'divisors'
  * and a function that implements the divisor apportionment.
  *
- * @author daconcep
+ * @author danco
  */
 public final class Divisors {
 
     private Divisors() {
+        throw new UnsupportedOperationException();
     }
 
     /**
-     * @param votes: represents the votes given to each party involved.
-     * @param esc:   number of pieces to divide among the parties.
-     * @param div:   method that represent the list of divisors; i.e. a strictly growing function from int to double.
+     * Solves the apportionment problem with a divisor.
+     * <p>
+     * Steps of the algorithm:
+     * <lu>
+     * <li>We stipulate a random order of the parties</>
+     * <li>For each party, we compute votes/div(0), ..., votes/div(esc-1)</li>
+     * <li>We order those values, and in case of tie, we order by the previous random order</li>
+     * <li>The first {@param esc} in the list are the winners</li>
+     * </lu>
+     *
+     * @param votes represents the votes given to each party involved.
+     * @param esc   number of pieces to divide among the parties.
+     * @param div   method that represent the list of divisors; i.e. a strictly growing function from int to double.
      * @return a partition of esc among the parties involved with respect to the votes.
      */
     public static Map<String, Integer> methodDivisor(Map<String, Long> votes, int esc, Divisor div) {
@@ -39,10 +50,11 @@ public final class Divisors {
      */
     @Testing(type = Testing.Type.DIVISOR)
     public static double divisorsHill(int n) {
-        if (n == 0) {
-            return 0.001;
+        double solution = 10E-3;
+        if (n != 0) {
+            solution = Math.sqrt(n * (n + 1.0));
         }
-        return Math.sqrt(n * (n + 1.0));
+        return solution;
     }
 
     /**
@@ -51,10 +63,11 @@ public final class Divisors {
      */
     @Testing(type = Testing.Type.DIVISOR)
     public static double divisorsDean(int n) {
-        if (n == 0) {
-            return 0.001;
+        double solution = 10E-3;
+        if (n != 0) {
+            solution = n * (n + 1) / (n + 0.5);
         }
-        return n * (n + 1) / (n + 0.5);
+        return solution;
     }
 
     /**
@@ -72,17 +85,18 @@ public final class Divisors {
      */
     @Testing(type = Testing.Type.DIVISOR)
     public static double divisorsSaintMod(int n) {
-        if (n == 0) {
-            return 0.7;
+        double solution = 0.7;
+        if (n != 0) {
+            solution = divisorsSaint(n);
         }
-        return n + 1.0 / 2;
+        return solution;
     }
 
     /**
      * @param n step
      * @return n+2
      */
-    @Testing(type = Testing.Type.DIVISOR)
+    @Testing(type = Testing.Type.DIVISOR, toBeTested = false)
     public static double divisorsImperialii(int n) {
         return 2.0 + n;
     }
@@ -98,13 +112,10 @@ public final class Divisors {
 
     /**
      * @param n step
-     * @return n^0.9
+     * @return (n + 1) ^ 0.9
      */
-    @Testing(type = Testing.Type.DIVISOR)
+    @Testing(type = Testing.Type.DIVISOR, toBeTested = false)
     public static double divisorsEstonia(int n) {
-        if (n == 0) {
-            return 1;
-        }
         return Math.pow(n + 1.0, 0.9);
     }
 

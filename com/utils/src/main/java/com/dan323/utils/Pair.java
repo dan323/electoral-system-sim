@@ -21,13 +21,13 @@ public class Pair<T, S extends Comparable<S>> implements Entry<T, S>, Comparable
     private final RandomComparator<T> randomComparator;
     private S value;
 
-    public Pair(T st, S d,RandomComparator<T> randomComparator) {
+    public Pair(T st, S d, RandomComparator<T> randomComparator) {
         key = st;
         value = d;
-        this.randomComparator=randomComparator;
+        this.randomComparator = randomComparator;
     }
 
-    public RandomComparator<T> getRandomComparator(){
+    public RandomComparator<T> getRandomComparator() {
         return randomComparator;
     }
 
@@ -54,10 +54,13 @@ public class Pair<T, S extends Comparable<S>> implements Entry<T, S>, Comparable
 
     @Override
     public int compareTo(Pair<T, S> o) {
-        if (Entry.<T,S>comparingByValue().compare(o,this)==0){
-            return randomComparator.compare(o.key,key);
+        int result;
+        if (Entry.<T, S>comparingByValue().compare(o, this) == 0) {  // Remember that compare(a,b) == 0 does not always imply that a.equals(b)
+            result = randomComparator.compare(o.key, key);
+        } else {
+            result = Entry.<T, S>comparingByValue().compare(o, this);
         }
-        return Entry.<T,S>comparingByValue().compare(o,this);
+        return result;
     }
 
     @Override

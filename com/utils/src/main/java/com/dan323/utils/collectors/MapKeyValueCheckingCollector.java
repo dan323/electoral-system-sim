@@ -30,11 +30,13 @@ public class MapKeyValueCheckingCollector<K, S, T> implements Collector<K, Map<S
         return this::accumulate;
     }
 
-    private void accumulate(Map<S, T> map, K s) {
+    protected void accumulate(Map<S, T> map, K s) {
         S key = keyFunc.apply(s, map);
-        T value = valueFunc.apply(s, map);
-        map.put(key, value);
-        remember.put(Map.entry(key, value), s);
+        if (key != null) {
+            T value = valueFunc.apply(s, map);
+            map.put(key, value);
+            remember.put(Map.entry(key, value), s);
+        }
     }
 
     @Override

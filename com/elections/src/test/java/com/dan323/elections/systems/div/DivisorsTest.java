@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 /**
  * This test is for divisor methods
  */
-public class DivisorsTesting {
+public class DivisorsTest {
 
     private static final Random random = new Random();
     private static final int NUMBER_OF_REPETITIONS = 10;

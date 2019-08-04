@@ -1,7 +1,7 @@
 package com.dan323.elections.systems.quo;
 
-import com.dan323.elections.systems.Testing;
 import com.dan323.elections.simulations.PartyListPair;
+import com.dan323.elections.systems.Testing;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,27 +20,32 @@ public final class Quotas {
     }
 
     /**
-     * @param votes: represents the votes given to each party involved.
-     * @param esc:   number of pieces to divide among the parties.
-     * @param mm:    method that distributes the remainder votes.
-     * @param quot:  quota function of the method
+     * Computes the result of apportionment with the given {@param quot} and {@param remainder}
+     * <p>
+     * The algorithm assigns the quota results first,
+     * then calls the remainder method to assign the rest.
+     *
+     * @param votes     represents the votes given to each party involved.
+     * @param esc       number of pieces to divide among the parties.
+     * @param remainder method that distributes the remainder votes.
+     * @param quot      quota function of the method
      * @return map with seats distributed
      */
-    public static <T> Map<T, Integer> methodQuota(Map<T, Long> votes, int esc, Quota<T> quot, Remainder<T> mm) {
-        Map<T, Double> aux = new HashMap<>();
-        Map<T, Integer> res = new HashMap<>();
+    public static <T> Map<T, Integer> methodQuota(Map<T, Long> votes, int esc, Quota<T, Long> quot, Remainder<T> remainder) {
+        Map<T, Double> remainders = new HashMap<>();
+        Map<T, Integer> result = new HashMap<>();
 
         double d = quot.apply(votes, esc);
         votes.entrySet().stream()
                 .map(e -> Map.entry(e.getKey(),
                         Map.entry((int) Math.floor(e.getValue() / d), e.getValue() / d - (int) Math.floor(e.getValue() / d))))
                 .forEach(e -> {
-                    res.put(e.getKey(), e.getValue().getKey());
-                    aux.put(e.getKey(), e.getValue().getValue());
+                    result.put(e.getKey(), e.getValue().getKey());
+                    remainders.put(e.getKey(), e.getValue().getValue());
                 });
 
-        mm.apply(esc - res.values().stream().mapToInt(z->z).sum(), aux, res);
-        return res;
+        remainder.apply(esc - result.values().stream().mapToInt(z -> z).sum(), remainders, result);
+        return result;
     }
 
     /**
@@ -61,9 +66,9 @@ public final class Quotas {
 
 
     /**
-     * @param esc:  number of pieces to divide among the parties.
-     * @param dob:  remainders of the parties involved.
-     * @param mint: previous apportionment.
+     * @param esc  number of pieces to divide among the parties.
+     * @param dob  remainders of the parties involved.
+     * @param mint previous apportionment.
      */
     @Testing(type = Testing.Type.REMAINDER)
     public static void remaindersLargestRemainderRelative(int esc, Map<String, Double> dob, Map<String, Integer> mint) {
@@ -75,9 +80,9 @@ public final class Quotas {
 
 
     /**
-     * @param esc:  number of pieces to divide among the parties.
-     * @param dob:  remainders of the parties involved.
-     * @param mint: previous apportionment.
+     * @param esc  number of pieces to divide among the parties.
+     * @param dob  remainders of the parties involved.
+     * @param mint previous apportionment.
      */
     @Testing(type = Testing.Type.REMAINDER)
     public static void remaindersWinnerAll(int esc, Map<String, Double> dob, Map<String, Integer> mint) {
@@ -89,8 +94,8 @@ public final class Quotas {
     }
 
     /**
-     * @param esc:   number of pieces to divide among the parties.
-     * @param votes: represents the votes given to each party involved.
+     * @param esc   number of pieces to divide among the parties.
+     * @param votes represents the votes given to each party involved.
      * @return standard quota
      */
     @Testing(type = Testing.Type.QUOTA)
@@ -100,8 +105,8 @@ public final class Quotas {
     }
 
     /**
-     * @param esc:   number of pieces to divide among the parties.
-     * @param votes: represents the votes given to each party involved.
+     * @param esc   number of pieces to divide among the parties.
+     * @param votes represents the votes given to each party involved.
      * @return droop quota
      */
     @Testing(type = Testing.Type.QUOTA)

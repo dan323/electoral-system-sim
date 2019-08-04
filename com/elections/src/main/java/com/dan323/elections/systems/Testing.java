@@ -12,11 +12,12 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface Testing {
 
-    enum Type{
-        DIVISOR,QUOTA,REMAINDER,STV
-    }
     boolean toBeTested() default true;
 
     Type type();
+
+    enum Type {
+        DIVISOR, QUOTA, REMAINDER, TRANSFER, CHOICE
+    }
 
 }

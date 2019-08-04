@@ -1,4 +1,8 @@
-package com.dan323.utils.collectors;
+package com.dan323.utils.collectors.main;
+
+import com.dan323.utils.collectors.CountingCollectorInteger;
+import com.dan323.utils.collectors.CountingCollectorLong;
+import com.dan323.utils.collectors.MapKeyValueCheckingCollector;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -9,6 +13,7 @@ import java.util.stream.Collector;
 public final class CustomCollectors {
 
     private CustomCollectors() {
+        throw new UnsupportedOperationException();
     }
 
     /**

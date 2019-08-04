@@ -4,6 +4,7 @@ import com.dan323.elections.systems.Testing;
 import com.dan323.elections.systems.div.Divisor;
 import com.dan323.elections.systems.quo.Quota;
 import com.dan323.elections.systems.quo.Remainder;
+import com.dan323.elections.systems.stv.STVTransfer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -28,12 +29,16 @@ public final class ElectionMethodsTestReflectionUtils {
         return getMethods(ElectionMethodsTestReflectionUtils::getDivisor, clazzes, Testing.Type.DIVISOR);
     }
 
-    public static <T> List<Quota<T>> getQuotaMethods(List<Class> clazzes) {
+    public static <T, N extends Number> List<Quota<T, N>> getQuotaMethods(List<Class> clazzes) {
         return getMethods(ElectionMethodsTestReflectionUtils::getQuota, clazzes, Testing.Type.QUOTA);
     }
 
     public static <T> List<Remainder<T>> getRemainderMethods(List<Class> clazzes) {
         return getMethods(ElectionMethodsTestReflectionUtils::getRemainder, clazzes, Testing.Type.REMAINDER);
+    }
+
+    public static <T> List<STVTransfer<T>> getTransferVotesMethods(List<Class> clazzes) {
+        return getMethods(ElectionMethodsTestReflectionUtils::getTransferVotes, clazzes, Testing.Type.TRANSFER);
     }
 
     private static <T> void applyMethodRemainder(Method method, Map<T, Double> remainders, Map<T, Integer> quotaResults, int n) {
@@ -46,8 +51,22 @@ public final class ElectionMethodsTestReflectionUtils {
         }
     }
 
+    private static <T> void applyMethodTransferVotes(Method method, T candidate, long transfer, Map<T, Double> votes, Map<List<T>, Long> originalVotes) {
+        try {
+            method.invoke(null, candidate, transfer, votes, originalVotes);
+        } catch (IllegalAccessException e) {
+            LOG.log(Level.SEVERE, ILLEGAL_ACCESS_TO_METHOD);
+        } catch (InvocationTargetException e) {
+            LOG.log(Level.SEVERE, INVOCATION_TARGET_ERROR, e.getCause());
+        }
+    }
+
     private static <T> Remainder<T> getRemainder(Method method) {
         return (n, rem, quotas) -> applyMethodRemainder(method, rem, quotas, n);
+    }
+
+    private static <T> STVTransfer<T> getTransferVotes(Method method) {
+        return (candidate, transfer, votes, originalVotes) -> applyMethodTransferVotes(method, candidate, transfer, votes, originalVotes);
     }
 
     private static Stream<Method> getMethods(List<Class> clazzes, Testing.Type remainder) {
@@ -80,7 +99,7 @@ public final class ElectionMethodsTestReflectionUtils {
         return n -> applyMethodDivisor(method, n);
     }
 
-    private static <T> double applyMethodQuota(Method method, Map<T, Long> votes, int n) {
+    private static <T, N extends Number> double applyMethodQuota(Method method, Map<T, N> votes, int n) {
         try {
             return (double) method.invoke(null, votes, n);
         } catch (IllegalAccessException e) {
@@ -91,7 +110,7 @@ public final class ElectionMethodsTestReflectionUtils {
         return 0;
     }
 
-    private static <T> Quota<T> getQuota(Method method) {
+    private static <T, N extends Number> Quota<T, N> getQuota(Method method) {
         return (votes, n) -> applyMethodQuota(method, votes, n);
     }
 

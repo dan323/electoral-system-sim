@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * @author danco
  */
-public class PartyListSimulationTesting {
+public class PartyListSimulationTest {
 
     @Test
     public void testSimulationNumberParties() {

@@ -1,5 +1,6 @@
 package com.dan323.utils.collectors;
 
+import com.dan323.utils.collectors.main.CustomCollectors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

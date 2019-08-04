@@ -1,105 +1,83 @@
 package com.dan323.elections.systems.stv;
 
 import com.dan323.elections.systems.Testing;
-import com.dan323.elections.systems.quo.Quota;
+import com.dan323.utils.collectors.main.CustomCollectors;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public final class VoteTransfers {
 
-    private static final Random random = new Random();
+    private static final Random RANDOM = new Random();
 
     private VoteTransfers() {
     }
 
-    @Testing(type = Testing.Type.STV)
-    public static Map<String, Double> trasnferePure(String candidate, Map<List<String>, Long> votes, Quota<List<String>> quota, int seats, List<String> validCandidates) {
+    @Testing(type = Testing.Type.TRANSFER)
+    public static <T> void transferPure(T candidate, double transfer, Map<T, Double> votes, Map<List<T>, Map<T, Long>> originalVotesDistribution, Set<T> hopefuls) {
 
-        Map<String, Double> solution = initMap(validCandidates);
+        double total = votes.get(candidate);
+        Map<List<T>, Long> originalVotes = originalVotesDistribution.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().values().stream().mapToLong(x -> x).sum()));
 
-        List<String> validPlusCurrent = new ArrayList<>(validCandidates);
-        validPlusCurrent.add(candidate);
+        Map<T, Double> map = originalVotes.entrySet().stream()
+                .filter(listLongEntry -> listLongEntry.getKey().contains(candidate))
+                .filter(listLongEntry -> checkNoValidCandidateBefore(listLongEntry.getKey(), listLongEntry.getKey().indexOf(candidate), hopefuls))
+                .collect(CustomCollectors.toMap(
+                        (listLongEntry, longMap) -> nextValid(listLongEntry.getKey(), listLongEntry.getKey().indexOf(candidate), hopefuls),
+                        (listLongEntry, longMap) -> longMap.get(nextValid(listLongEntry.getKey(), listLongEntry.getKey().indexOf(candidate), hopefuls)) + percentage(listLongEntry.getValue(), transfer, total)
+                ));
 
-        double quotaDouble=quota.apply(votes,seats);
-
-        long total = votes.entrySet().stream()
-                .filter(e -> e.getKey().stream()
-                        .filter(validPlusCurrent::contains)
-                        .findFirst()
-                        .orElse(candidate + "NOT").equals(candidate))
-                .mapToLong(Map.Entry::getValue)
-                .sum();
-
-        votes.entrySet().stream()
-                .filter(e -> e.getKey().stream()
-                        .filter(validPlusCurrent::contains)
-                        .findFirst()
-                        .orElse(candidate + "NOT").equals(candidate))
-                .forEach(e -> e.getKey().stream()
-                        .filter(validCandidates::contains)
-                        .findFirst().ifPresent(st -> solution.put(st, solution.get(st) + percentage(e.getValue(), (int)quotaDouble, total)))
-                );
-
-        return solution.entrySet().stream()
-                .filter(e->e.getValue()!=0)
-                .collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue));
+        votes.forEach((a, b) -> votes.put(a, map.getOrDefault(a, 0.0)));
     }
 
-    @Testing(type = Testing.Type.STV)
-    public static Map<String, Double> transfereRandom(String candidate, Map<List<String>, Long> votes, Quota<List<String>> quota, int seats, List<String> validCandidates) {
+    private static <T> T nextValid(List<T> key, int indexOf, Set<T> validCandidates) {
+        T valid = null;
+        int i = 1;
+        do {
+            if (indexOf + i < key.size() && validCandidates.contains(key.get(indexOf + i))) {
+                valid = key.get(indexOf + i);
+            }
+            i++;
+        } while (valid == null && indexOf + i < key.size());
+        return valid;
+    }
 
-        Map<String, Double> auxiliar = initMap(validCandidates);
-
-        List<String> validPlusCurrent = new ArrayList<>(validCandidates);
-        validPlusCurrent.add(candidate);
-
-        long total = votes.entrySet().stream()
-                .filter(e -> e.getKey().stream()
-                        .filter(validPlusCurrent::contains)
-                        .findFirst()
-                        .orElse(candidate + "NOT").equals(candidate))
-                .mapToLong(Map.Entry::getValue)
-                .sum();
-
-        int excess = (int)(total - quota.apply(votes,seats));
-
-        votes.entrySet().stream()
-                .filter(e -> e.getKey().stream()
-                        .filter(validPlusCurrent::contains)
-                        .findFirst()
-                        .orElse(candidate + "NOT").equals(candidate))
-                .forEach(e -> e.getKey().stream()
-                        .filter(validCandidates::contains)
-                        .findFirst().ifPresent(st -> auxiliar.put(st, auxiliar.get(st) + e.getValue()))
-                );
-
-        Map<String, Double> solution = new HashMap<>();
-        for (int i = 0; i < excess; i++) {
-            int count = 0;
-            int rand = random.nextInt(excess);
-            for (Map.Entry<String, Double> e : auxiliar.entrySet()) {
-                count+=e.getValue();
-                if (count>=rand){
-                    auxiliar.put(e.getKey(),auxiliar.get(e.getKey())-1);
-                    solution.put(e.getKey(),solution.getOrDefault(e.getKey(),0.0)+1);
-                    break;
+    private static <T> boolean checkIfValidCandidateAfter(List<T> key, int candidateIndex, Set<T> validCandidates) {
+        for (T validCandidate : validCandidates) {
+            if (key.contains(validCandidate)) {
+                int index = key.indexOf(validCandidate);
+                if (index > candidateIndex) {
+                    return true;
                 }
             }
         }
-
-        return solution;
+        return false;
     }
 
-    private static double percentage(long value, int quota, double total) {
-        return (value / total) * (total - quota);
+
+    @Testing(type = Testing.Type.TRANSFER)
+    public static <T> void transferRandom(T candidate, double transfer, Map<T, Double> votes, Map<List<T>, Map<T, Long>> originalVotes, Set<T> hopefuls) {
+
+
     }
 
-    private static Map<String, Double> initMap(List<String> validCandidates) {
-        Map<String, Double> sol = new HashMap<>();
-        for (String st : validCandidates) {
-            sol.put(st, 0.0);
+    private static <T> boolean checkNoValidCandidateBefore(List<T> key, int indexOf, Set<T> collect) {
+        for (T validCandidate : collect) {
+            if (key.contains(validCandidate)) {
+                int index = key.indexOf(validCandidate);
+                if (index < indexOf) {
+                    return false;
+                }
+            }
         }
-        return sol;
+        return true;
     }
+
+    private static double percentage(long value, double transfer, double total) {
+        return (value / total) * transfer;
+    }
+
 }

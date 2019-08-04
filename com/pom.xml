@@ -6,6 +6,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <aggregate.report.dir>jacoco-aggregate/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
     </properties>
 
     <groupId>com.dan323.elections</groupId>
@@ -17,7 +18,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>12</source>
                     <target>12</target>
@@ -35,14 +36,6 @@
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>3.6.0.1398</version>
-                <executions>
-                    <execution>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sonar</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -78,6 +71,7 @@
     <modules>
         <module>utils</module>
         <module>elections</module>
+        <module>jacoco-aggregate</module>
     </modules>
     <dependencies>
         <dependency><!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->

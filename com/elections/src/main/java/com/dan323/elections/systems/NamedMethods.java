@@ -8,6 +8,7 @@ import java.util.Map;
 public final class NamedMethods {
 
     private NamedMethods() {
+        throw new UnsupportedOperationException();
     }
 
     /**
