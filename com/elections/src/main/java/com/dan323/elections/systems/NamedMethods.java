@@ -44,9 +44,7 @@ public final class NamedMethods {
      * @return Hamilton solution
      */
     public static Map<String, Integer> methodHamilton(Map<String, Long> votes, int esc) {
-
         return Quotas.methodQuota(votes, esc, Quotas::quotaStandard, Quotas::remaindersLargestRemainder);
-
     }
 
     /**
@@ -55,8 +53,6 @@ public final class NamedMethods {
      * @return Relative hamilton solution
      */
     public static Map<String, Integer> methodHamiltonRel(Map<String, Long> votes, int esc) {
-
         return Quotas.methodQuota(votes, esc, Quotas::quotaStandard, Quotas::remaindersLargestRemainderRelative);
-
     }
 }

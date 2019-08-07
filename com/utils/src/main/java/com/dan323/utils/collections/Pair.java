@@ -1,4 +1,4 @@
-package com.dan323.utils;
+package com.dan323.utils.collections;
 
 import com.dan323.utils.comparators.RandomComparator;
 

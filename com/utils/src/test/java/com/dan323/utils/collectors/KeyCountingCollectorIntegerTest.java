@@ -1,6 +1,6 @@
 package com.dan323.utils.collectors;
 
-import com.dan323.utils.Pair;
+import com.dan323.utils.collections.Pair;
 import com.dan323.utils.collectors.main.CustomCollectors;
 import com.dan323.utils.comparators.RandomComparator;
 import org.junit.jupiter.api.Assertions;

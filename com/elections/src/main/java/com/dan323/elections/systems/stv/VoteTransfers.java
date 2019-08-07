@@ -1,25 +1,23 @@
 package com.dan323.elections.systems.stv;
 
 import com.dan323.elections.systems.Testing;
+import com.dan323.utils.collections.CollectionUtils;
 import com.dan323.utils.collectors.main.CustomCollectors;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public final class VoteTransfers {
 
-    private static final Random RANDOM = new Random();
-
     private VoteTransfers() {
+        throw new UnsupportedOperationException();
     }
 
     @Testing(type = Testing.Type.TRANSFER)
     public static <T> void transferPure(T candidate, double transfer, Map<T, Double> votes, Map<List<T>, Map<T, Long>> originalVotesDistribution, Set<T> hopefuls) {
 
         double total = votes.get(candidate);
+        //In this transfer, we are only interested in the votes by list
         Map<List<T>, Long> originalVotes = originalVotesDistribution.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().values().stream().mapToLong(x -> x).sum()));
 
         Map<T, Double> map = originalVotes.entrySet().stream()
@@ -45,35 +43,40 @@ public final class VoteTransfers {
         return valid;
     }
 
-    private static <T> boolean checkIfValidCandidateAfter(List<T> key, int candidateIndex, Set<T> validCandidates) {
-        for (T validCandidate : validCandidates) {
-            if (key.contains(validCandidate)) {
-                int index = key.indexOf(validCandidate);
-                if (index > candidateIndex) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-
     @Testing(type = Testing.Type.TRANSFER)
     public static <T> void transferRandom(T candidate, double transfer, Map<T, Double> votes, Map<List<T>, Map<T, Long>> originalVotes, Set<T> hopefuls) {
 
+        Map<List<T>, Long> candidateVotes = originalVotes.entrySet().stream()
+                .map(entry -> (Map.Entry<List<T>, Long>) new AbstractMap.SimpleEntry<>(entry.getKey(), entry.getValue().getOrDefault(candidate, 0L)))
+                .filter(entry -> entry.getValue() != 0L)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        long longTransfer = Double.doubleToLongBits(transfer);
+        for (long l = 0; l < longTransfer; l++) {
+            List<T> choice = CollectionUtils.someElement(candidateVotes.keySet());
+            Optional<T> nextValid = getNextValidCandidate(choice, choice.indexOf(candidate), hopefuls);
+            if (nextValid.isPresent()) {
+                T transferTo = nextValid.get();
+
+                Map<T, Long> votesDistribution = originalVotes.get(choice);
+                votesDistribution.put(candidate, votesDistribution.get(candidate) - 1);
+                votesDistribution.put(transferTo, votesDistribution.get(transferTo) + 1);
+                originalVotes.put(choice, votesDistribution);
+
+                votes.put(transferTo, votes.get(transferTo) + 1);
+            }
+            candidateVotes.put(choice, candidateVotes.get(choice) - 1);
+        }
+
 
     }
 
+    private static <T> Optional<T> getNextValidCandidate(List<T> choice, int indexOf, Set<T> hopefuls) {
+        return CollectionUtils.findFirstElement(choice.subList(indexOf, choice.size()), hopefuls);
+    }
+
     private static <T> boolean checkNoValidCandidateBefore(List<T> key, int indexOf, Set<T> collect) {
-        for (T validCandidate : collect) {
-            if (key.contains(validCandidate)) {
-                int index = key.indexOf(validCandidate);
-                if (index < indexOf) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return CollectionUtils.findNoElementsInList(key.subList(indexOf, key.size()), collect);
     }
 
     private static double percentage(long value, double transfer, double total) {

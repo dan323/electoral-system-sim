@@ -1,5 +1,6 @@
 package com.dan323.utils;
 
+import com.dan323.utils.collections.Pair;
 import com.dan323.utils.comparators.RandomComparator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

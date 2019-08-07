@@ -1,6 +1,6 @@
 package com.dan323.elections.simulations;
 
-import com.dan323.utils.Pair;
+import com.dan323.utils.collections.Pair;
 import com.dan323.utils.comparators.RandomComparator;
 
 /**
