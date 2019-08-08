@@ -9,6 +9,6 @@ import java.util.Set;
  */
 public interface STVTransfer<T> {
 
-    void transfer(T candidate, long transfer, Map<T, Double> votes, Map<List<T>, Long> originalVotes, Set<T> hopefuls);
+    void transfer(T candidate, long transfer, Map<T, Double> votes, Map<List<T>, Map<T, Long>> originalVotes, Set<T> hopefuls);
 
 }

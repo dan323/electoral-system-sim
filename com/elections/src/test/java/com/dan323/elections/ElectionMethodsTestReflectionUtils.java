@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,9 +52,9 @@ public final class ElectionMethodsTestReflectionUtils {
         }
     }
 
-    private static <T> void applyMethodTransferVotes(Method method, T candidate, long transfer, Map<T, Double> votes, Map<List<T>, Long> originalVotes) {
+    private static <T> void applyMethodTransferVotes(Method method, T candidate, long transfer, Map<T, Double> votes, Map<List<T>, Map<T,Long>> originalVotes, Set<T> hopefuls) {
         try {
-            method.invoke(null, candidate, transfer, votes, originalVotes);
+            method.invoke(null, candidate, transfer, votes, originalVotes, hopefuls);
         } catch (IllegalAccessException e) {
             LOG.log(Level.SEVERE, ILLEGAL_ACCESS_TO_METHOD);
         } catch (InvocationTargetException e) {
@@ -66,7 +67,7 @@ public final class ElectionMethodsTestReflectionUtils {
     }
 
     private static <T> STVTransfer<T> getTransferVotes(Method method) {
-        return (candidate, transfer, votes, originalVotes) -> applyMethodTransferVotes(method, candidate, transfer, votes, originalVotes);
+        return (candidate, transfer, votes, originalVotes, hopefuls) -> applyMethodTransferVotes(method, candidate, transfer, votes, originalVotes,hopefuls);
     }
 
     private static Stream<Method> getMethods(List<Class> clazzes, Testing.Type remainder) {
