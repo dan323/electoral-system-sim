@@ -24,6 +24,7 @@ public final class ElectionMethodsTestReflectionUtils {
     private static final Logger LOG = Logger.getLogger("Election methods utils:");
 
     private ElectionMethodsTestReflectionUtils() {
+        throw new UnsupportedOperationException();
     }
 
     public static List<Divisor> getDivisorMethods(List<Class> clazzes) {
@@ -52,7 +53,7 @@ public final class ElectionMethodsTestReflectionUtils {
         }
     }
 
-    private static <T> void applyMethodTransferVotes(Method method, T candidate, long transfer, Map<T, Double> votes, Map<List<T>, Map<T,Long>> originalVotes, Set<T> hopefuls) {
+    private static <T> void applyMethodTransferVotes(Method method, T candidate, long transfer, Map<T, Double> votes, Map<List<T>, Map<T, Long>> originalVotes, Set<T> hopefuls) {
         try {
             method.invoke(null, candidate, transfer, votes, originalVotes, hopefuls);
         } catch (IllegalAccessException e) {
@@ -67,33 +68,34 @@ public final class ElectionMethodsTestReflectionUtils {
     }
 
     private static <T> STVTransfer<T> getTransferVotes(Method method) {
-        return (candidate, transfer, votes, originalVotes, hopefuls) -> applyMethodTransferVotes(method, candidate, transfer, votes, originalVotes,hopefuls);
+        return (candidate, transfer, votes, originalVotes, hopefuls) -> applyMethodTransferVotes(method, candidate, transfer, votes, originalVotes, hopefuls);
     }
 
-    private static Stream<Method> getMethods(List<Class> clazzes, Testing.Type remainder) {
+    private static Stream<Method> getMethods(List<Class> clazzes, Testing.Type type) {
         return clazzes.stream()
                 .map(Class::getDeclaredMethods)
                 .flatMap(Stream::of)
                 .filter(m -> m.isAnnotationPresent(Testing.class))
                 .filter(m -> m.getAnnotation(Testing.class).toBeTested())
-                .filter(m -> m.getAnnotation(Testing.class).type().equals(remainder));
+                .filter(m -> m.getAnnotation(Testing.class).type().equals(type));
     }
 
-    private static <T> List<T> getMethods(Function<Method, T> function, List<Class> clazzes, Testing.Type remainder) {
-        return getMethods(clazzes, remainder)
+    private static <T> List<T> getMethods(Function<Method, T> function, List<Class> clazzes, Testing.Type type) {
+        return getMethods(clazzes, type)
                 .map(function)
                 .collect(Collectors.toList());
     }
 
     private static double applyMethodDivisor(Method method, int n) {
+        double solution = 0;
         try {
-            return (double) method.invoke(null, n);
+            solution = (double) method.invoke(null, n);
         } catch (IllegalAccessException e) {
             LOG.log(Level.SEVERE, ILLEGAL_ACCESS_TO_METHOD);
         } catch (InvocationTargetException e) {
             LOG.log(Level.SEVERE, INVOCATION_TARGET_ERROR, e.getCause());
         }
-        return 0;
+        return solution;
     }
 
     private static Divisor getDivisor(Method method) {
@@ -101,14 +103,15 @@ public final class ElectionMethodsTestReflectionUtils {
     }
 
     private static <T, N extends Number> double applyMethodQuota(Method method, Map<T, N> votes, int n) {
+        double solution = 0;
         try {
-            return (double) method.invoke(null, votes, n);
+            solution = (double) method.invoke(null, votes, n);
         } catch (IllegalAccessException e) {
             LOG.log(Level.SEVERE, ILLEGAL_ACCESS_TO_METHOD);
         } catch (InvocationTargetException e) {
             LOG.log(Level.SEVERE, INVOCATION_TARGET_ERROR, e.getCause());
         }
-        return 0;
+        return solution;
     }
 
     private static <T, N extends Number> Quota<T, N> getQuota(Method method) {
