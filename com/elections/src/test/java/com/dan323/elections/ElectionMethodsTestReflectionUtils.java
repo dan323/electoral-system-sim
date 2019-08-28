@@ -4,12 +4,14 @@ import com.dan323.elections.systems.Testing;
 import com.dan323.elections.systems.div.Divisor;
 import com.dan323.elections.systems.quo.Quota;
 import com.dan323.elections.systems.quo.Remainder;
+import com.dan323.elections.systems.stv.STVChoice;
 import com.dan323.elections.systems.stv.STVTransfer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.logging.Level;
@@ -43,6 +45,10 @@ public final class ElectionMethodsTestReflectionUtils {
         return getMethods(ElectionMethodsTestReflectionUtils::getTransferVotes, clazzes, Testing.Type.TRANSFER);
     }
 
+    public static <T> List<STVChoice<T>> getChoiceVotesMethods(List<Class> clazzes) {
+        return getMethods(ElectionMethodsTestReflectionUtils::getChoiceVotes, clazzes, Testing.Type.CHOICE);
+    }
+
     private static <T> void applyMethodRemainder(Method method, Map<T, Double> remainders, Map<T, Integer> quotaResults, int n) {
         try {
             method.invoke(null, n, remainders, quotaResults);
@@ -69,6 +75,22 @@ public final class ElectionMethodsTestReflectionUtils {
 
     private static <T> STVTransfer<T> getTransferVotes(Method method) {
         return (candidate, transfer, votes, originalVotes, hopefuls) -> applyMethodTransferVotes(method, candidate, transfer, votes, originalVotes, hopefuls);
+    }
+
+    private static <T> STVChoice<T> getChoiceVotes(Method method) {
+        return (votes, esc) -> applyMethodChoiceVotes(method, votes, esc);
+    }
+
+    private static <T> Optional<T> applyMethodChoiceVotes(Method method, Map<T, Double> votes, int esc) {
+        Optional<T> solution = Optional.empty();
+        try {
+            solution = (Optional<T>) method.invoke(null, votes, esc);
+        } catch (IllegalAccessException e) {
+            LOG.log(Level.SEVERE, ILLEGAL_ACCESS_TO_METHOD);
+        } catch (InvocationTargetException e) {
+            LOG.log(Level.SEVERE, INVOCATION_TARGET_ERROR, e.getCause());
+        }
+        return solution;
     }
 
     private static Stream<Method> getMethods(List<Class> clazzes, Testing.Type type) {

@@ -1,6 +1,7 @@
 package com.dan323.elections.systems.stv;
 
 import com.dan323.elections.systems.Testing;
+import com.dan323.elections.systems.quo.Quota;
 import com.dan323.utils.collections.CollectionUtils;
 import com.dan323.utils.collectors.main.CustomCollectors;
 
@@ -41,6 +42,29 @@ public final class VoteTransfers {
             i++;
         } while (valid == null && indexOf + i < key.size());
         return valid;
+    }
+
+    public static <T> List<T> STVMethodQuota(Quota<T,Double> quota, STVTransfer<T> transfer, Map<List<T>, Long> votes, int esc) {
+        Set<T> hopefuls = votes.keySet().stream().flatMap(List::stream).collect(Collectors.toSet());
+        Map<List<T>, Map<T, Long>> originalVotes = new HashMap<>();
+        List<T> elected = new ArrayList<>();
+        Map<T, Double> map = new HashMap<>();
+        votes.forEach((lst, lng) -> updateMaps(lst, lng, map, originalVotes, votes));
+        while (elected.size() < esc) {
+            STVChoice<T> choice = new STVChoiceQuota<>(quota);
+            Optional<T> candidate = choice.choice(map, esc);
+
+            candidate.ifPresent(elected::add);
+            candidate.ifPresent(can -> transfer.transfer(can, 0L, map, originalVotes, hopefuls));
+        }
+        return elected;
+    }
+
+    private static <T> void updateMaps(List<T> lst, Long lng, Map<T, Double> map, Map<List<T>, Map<T, Long>> originalVotes, Map<List<T>, Long> votes) {
+        map.put(lst.get(0), lng.doubleValue() + map.getOrDefault(lst.get(0), 0.0));
+        Map<T, Long> m = new HashMap<>();
+        m.put(lst.get(0), votes.get(lst));
+        originalVotes.put(lst, m);
     }
 
     @Testing(type = Testing.Type.TRANSFER)
